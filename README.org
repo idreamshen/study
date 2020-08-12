@@ -106,7 +106,7 @@
 
 * Spring
 ** Spring MVC 流程
-** Spring Boot 启动
+** [[file:spring/boot/springboot.org][Spring Boot 启动]]
 
 * 算法
 ** UUID 算法
