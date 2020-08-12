@@ -21,7 +21,15 @@
 - 老年代：Tenured
 
 * 方法区（Method Area）
-用于存储已被虚拟机加载的类信息、常量、静态变量、即编译器编译后的代码
+- Runtime Constant Pool：运行常量池
+- Field & Method Data：字段及方法
+- Code：编译后的代码
+
+* 本地区（Native Area）
+- Stack：线程栈
+- Native Stack：本地方法栈
+- PC：程序计数器
+
 
 * 参考资料
 - [[https://mp.weixin.qq.com/s?__biz=MzI4NDY5Mjc1Mg==&mid=2247483949&idx=1&sn=8b69d833bbc805e63d5b2fa7c73655f5&chksm=ebf6da52dc815344add64af6fb78fee439c8c27b539b3c0e87d8f6861c8422144d516ae0a837&scene=158#rd][jvm系列(二):JVM内存结构]]
