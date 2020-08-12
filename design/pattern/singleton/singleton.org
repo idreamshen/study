@@ -6,7 +6,98 @@
 -- 维基百科
 #+end_quote
 
+* 实现
+** 懒汉式，线程不安全
+构造一个静态成员变量 instance，返回单例前判断该成员变量是否赋值，如果未赋值则实例化对象进行赋值
+#+begin_src java
+  class Singleton {
+      private static Singleton INSTANCE;
+      private Singleton() {}
+
+      public static Singleton getInstance() {
+          if (INSTANCE == null) {
+              INSTANCE = new Singleton();
+          }
+
+          return INSTANCE;
+      }
+
+  }
+#+end_src
+
+** 懒汉式，线程安全
+增加 synchronized 关键词，确保线程安全
+#+begin_src java
+  class Singleton {
+      private static Singleton INSTANCE;
+      private Singleton() {}
+
+      public static synchronized Singleton getInstance() {
+          if (INSTANCE == null) {
+              INSTANCE = new Singleton();
+          }
+
+          return INSTANCE;
+      }
+
+  }
+#+end_src
+
+** 双重检查锁
+上述线程安全的懒汉模式有个缺点就是效率不高，每次调用 =getInstance()= 方法
+#+begin_src java
+  class Singleton {
+      private static Singleton INSTANCE;
+      private Singleton() {}
+
+      public static Singleton getInstance() {
+          if (INSTANCE == null) {
+              synchronized (Singleton.class) {
+                  if (INSTANCE == null) {
+                      INSTANCE = new Singleton();
+                  }
+              }
+          }
+
+          return INSTANCE;
+      }
+
+  }
+
+#+end_src
+
+** 饿汉式
+饿汉式就是在类加载期间就完成了单例的创建，利用类加载器确保线程安全。
+缺点是较消耗资源，即使没有使用到该类的单例，也会消耗一定内存资源。
+#+begin_src java
+  class Singleton {
+      private static Singleton INSTANCE = new Singleton();
+      private Singleton() {}
+
+      public static Singleton getInstance() {
+          return INSTANCE;
+      }
+  }
+#+end_src
+** 静态内部类
+#+begin_src java
+  class Singleton {
+
+      private static class SingletonHolder {
+          private static final Singleton INSTANCE = new Singleton();
+      }
+
+      private Singleton() {}
+
+      public static Singleton getInstance() {
+          return SingletonHolder.INSTANCE;
+      }
+  }
+#+end_src
+** 枚举
 
 
 * 参考资料
 - [[https://zh.wikipedia.org/wiki/%E5%8D%95%E4%BE%8B%E6%A8%A1%E5%BC%8F][单例模式]]
+- [[http://wuchong.me/blog/2014/08/28/how-to-correctly-write-singleton-pattern/][如何正确地写出单例模式]]
+- [[https://juejin.im/post/6844903640969248776][面试官所认为的单例模式]]
