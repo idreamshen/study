@@ -16,9 +16,7 @@
   - ConcurrentHashMap 源码
   - [[file:concurrent/concurrent.org][列举 Java 并发容器]]
   - Java 线程状态
-  - Java 线程池 UML
-  - Java 线程池状态
-  - Java 线程池源码分析
+  - [[file:concurrent/threadpool.org][Java 线程池]]
 - JAVA 数据结构
   - Queue
   - HashMap
