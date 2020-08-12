@@ -14,7 +14,7 @@
   - ReentrantLock 源码
   - Condition 源码
   - ConcurrentHashMap 源码
-  - 列举 Java 并发容器
+  - [[file:concurrent/concurrent.org][列举 Java 并发容器]]
   - Java 线程状态
   - Java 线程池 UML
   - Java 线程池状态
