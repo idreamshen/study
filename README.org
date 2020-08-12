@@ -54,7 +54,7 @@
  
 - 算法
   - UUID 算法
-  - LRU 算法
+  - [[file:algorithm/lru/lru.org][LRU 算法]]
   - 分布式 ID 算法
 
 - 其他
