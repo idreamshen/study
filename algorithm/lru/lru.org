@@ -134,3 +134,4 @@ Least Recently Used 最近最少使用：最久没有访问的内容作为替换
 - [[https://www.cnblogs.com/yejg1212/archive/2013/04/01/2992921.html][LinkedHashMap的accessOrder的作用]]
 - [[https://baike.baidu.com/item/LRU][LRU]]
 - [[https://zh.wikipedia.org/wiki/%E5%BF%AB%E5%8F%96%E6%96%87%E4%BB%B6%E7%BD%AE%E6%8F%9B%E6%A9%9F%E5%88%B6][缓存文件置换机制]]
+- [[https://mp.weixin.qq.com/s/nA6UHBh87U774vu4VvGhyw][缓冲池(buffer pool)，这次彻底懂了]]
