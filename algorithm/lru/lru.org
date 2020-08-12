@@ -51,7 +51,84 @@ Least Recently Used 最近最少使用：最久没有访问的内容作为替换
    : k=c, v=3
    : k=a, v=1
 
+所以当 AccessOrder 为 true 时。那么最近被访问的元素就会放到链表的尾部，所以链表的头部也就是最近最少被访问的元素。
 
+** LinkedHashMap 实现 LRU
+   #+begin_src java :classname LruTest :cmdline "-cp ." :results output :exports both
+     import java.util.LinkedHashMap;
+     import java.util.Map;
+     import java.util.Map.Entry;
+
+     class LruTest {
+
+         static class Lru<K,V> extends LinkedHashMap<K,V> {
+             // 容量
+             final int capacity;
+
+             public Lru(int capacity) {
+                 super(16, 0.75f, true);
+                 this.capacity = capacity;
+             }
+
+             /**
+              ,* 重写 removeEldestEntry 方法，该方法会在 Map.put 时被调用
+              ,*
+              ,* 当前 size 如果大于设定的容量时，就返回 True
+              ,*/
+             @Override
+             protected boolean removeEldestEntry(Map.Entry<K,V> eldest) {
+                 return size() > capacity;
+             }
+         }
+
+         public static void main(String[] args) {
+             // 创建一个容量为 3 的 LRU
+             Lru<String, String> m = new Lru(3);
+             m.put("a", "1");
+             m.put("b", "2");
+             m.put("c", "3");
+
+             System.out.println("Lru 初始化3个元素，遍历如下");
+             print(m);
+
+
+             m.get("a");
+             System.out.println("Lru 执行 m.get(\"a\") 后，遍历如下");
+             print(m);
+
+             m.put("d", "4");
+             System.out.println("Lru 执行 m.put(\"d\", \"4\") 后，遍历如下");
+             print(m);
+         }
+
+         public static void print(Map<String, String> m) {
+             for (Entry<String, String> e : m.entrySet()) {
+                 String k = e.getKey();
+                 String v = e.getValue();
+                 System.out.println("k=" + k + ", v=" + v);
+             }
+         }
+     }
+
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Lru 初始化3个元素，遍历如下
+   k=a, v=1
+   k=b, v=2
+   k=c, v=3
+   Lru 执行 m.get("a") 后，遍历如下
+   k=b, v=2
+   k=c, v=3
+   k=a, v=1
+   Lru 执行 m.put("d", "4") 后，遍历如下
+   k=c, v=3
+   k=a, v=1
+   k=d, v=4
+   #+end_example
+
+可以看到，当执行 =m.put("d", "4")= 后，Lru 通过置换掉链表头节点 =key = b= 后，维持了3个元素。
 
 * 参考资料
 - [[https://www.cnblogs.com/yejg1212/archive/2013/04/01/2992921.html][LinkedHashMap的accessOrder的作用]]
