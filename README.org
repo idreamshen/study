@@ -1,66 +1,66 @@
 * 目录
-- [0/4] Mysql
-  - [ ] Mysql 事务特性
-  - [ ] Mysql 索引 B+ Tree 数据结构
-  - [ ] Mysql 数据存储原理
-  - [ ] Mysql 索引 abc 复合索引
-- [1/4] JVM
-  - [X] [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
-  - [ ] [[file:jvm/jvm-gc.org][JVM GC 算法]]
-  - [ ] Java 类加载过程
-  - [ ] Java 类加载机制
-- [0/9] JAVA 并发
-  - [ ] AQS 源码
-  - [ ] ReentrantLock 源码
-  - [ ] Condition 源码
-  - [ ] ConcurrentHashMap 源码
-  - [ ] 列举 Java 并发容器
-  - [ ] Java 线程状态
-  - [ ] Java 线程池 UML
-  - [ ] Java 线程池状态
-  - [ ] Java 线程池源码分析
-- [0/3] JAVA 数据结构
-  - [ ] Queue
-  - [ ] HashMap
-  - [ ] HashTable
-- [0/0] JAVA IO
-- [0/3] Redis
-  - [ ] Redis Cluster
-  - [ ] Redis 持久化方式
-  - [ ] Redis 底层数据结构
+- Mysql
+  - Mysql 事务特性
+  - Mysql 索引 B+ Tree 数据结构
+  - Mysql 数据存储原理
+  - Mysql 索引 abc 复合索引
+- JVM
+  - [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
+  - [[file:jvm/jvm-gc.org][JVM GC 算法]]
+  - Java 类加载过程
+  - Java 类加载机制
+- JAVA 并发
+  - AQS 源码
+  - ReentrantLock 源码
+  - Condition 源码
+  - ConcurrentHashMap 源码
+  - 列举 Java 并发容器
+  - Java 线程状态
+  - Java 线程池 UML
+  - Java 线程池状态
+  - Java 线程池源码分析
+- JAVA 数据结构
+  - Queue
+  - HashMap
+  - HashTable
+- JAVA IO
+- Redis
+  - Redis Cluster
+  - Redis 持久化方式
+  - Redis 底层数据结构
 
-- [0/2] Zookeeper
-  - [ ] Zookeeper ZAB 协议
-  - [ ] Zookeeper 如何防止脑裂
+- Zookeeper
+  - Zookeeper ZAB 协议
+  - Zookeeper 如何防止脑裂
     
-- [0/2] 消息队列
-  - [ ] RocketMQ
-  - [ ] Kafka
+- 消息队列
+  - RocketMQ
+  - Kafka
 
-- [0/3] 分布式事务
-  - [ ] 2PC
-  - [ ] 3PC
-  - [ ] TCC
-- [0/2] 分布式锁
-  - [ ] Redis 分布式锁
-  - [ ] Zookeeper 分布式锁
+- 分布式事务
+  - 2PC
+  - 3PC
+  - TCC
+- 分布式锁
+  - Redis 分布式锁
+  - Zookeeper 分布式锁
   
-- [0/3] 设计模式
-  - [ ] 单例模式
-  - [ ] 责任链模式
-  - [ ] 模版模式
+- 设计模式
+  - 单例模式
+  - 责任链模式
+  - 模版模式
 
-- [1/2] Spring
-  - [ ] Spring MVC 流程
-  - [X] [[file:spring/boot/springboot.org][Spring Boot 启动流程]]
+- Spring
+  - Spring MVC 流程
+  - [[file:spring/boot/springboot.org][Spring Boot 启动流程]]
  
-- [0/3] 算法
-  - [ ] UUID 算法
-  - [ ] LRU 算法
-  - [ ] 分布式 ID 算法
+- 算法
+  - UUID 算法
+  - LRU 算法
+  - 分布式 ID 算法
 
-- [0/4] 其他
-  - [ ] CSRF
-  - [ ] JAVA 的四种引用，强弱软虚
-  - [ ] 八种基本数据类型的大小，以及他们的封装类
-  - [ ] StringBuffer、StringBuilder 区别
+- 其他
+  - CSRF
+  - JAVA 的四种引用，强弱软虚
+  - 八种基本数据类型的大小，以及他们的封装类
+  - StringBuffer、StringBuilder 区别
