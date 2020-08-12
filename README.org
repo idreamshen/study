@@ -57,13 +57,11 @@
 ** Mysql 数据存储原理
 ** Mysql 索引 a b c 复合索引
 
-
 * JVM
 ** JVM 内存结构
 ** JVM GC 算法
 ** Java 类加载过程
 ** Java 类加载机制
-
 
 * JAVA 并发
 ** AQS 源码
@@ -77,27 +75,21 @@
 ** Java 线程池状态
 ** Java 线程池源码分析
 
-
-
 * JAVA 数据结构
 ** Queue
 ** HashMap 
 ** HashTable
 
-
 * JAVA IO
-
 
 * Redis
 ** Redis Cluster
 ** Redis 持久化方式
 ** Redis 底层数据结构
 
-
 * Zookeeper
 ** Zookeeper ZAB 协议
 ** Zookeeper 如何防止脑裂
-
 
 * 消息队列
 ** RocketMQ
@@ -105,26 +97,21 @@
 ** Kafka
 *** Kafka 内部组件
 
-
 * 分布式事务
 
 * 分布式锁
 
-
 * 设计模式
 ** 单例实现
-
 
 * Spring
 ** Spring MVC 流程
 ** Spring Boot 启动
 
-
 * 算法
 ** UUID 算法
 ** LRU 算法
 ** 分布式 ID 算法
-
 
 * 其他
 ** CSRF
