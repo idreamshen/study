@@ -1,0 +1,131 @@
+* OutputStream
+#+begin_src plantuml :file io.png
+abstract class OutputStream implements Closeable, Flushable {
+  + abstract void write(int b) throws IOException
+  + void write(byte b[]) throws IOException
+  + void write(byte b[], int off, int len) throws IOException
+  + void flush() throws IOException
+  + void close() throws IOException
+}
+
+class FileOutputStream extends OutputStream {
+  - final FileDescriptor fd
+  - final boolean append
+  - FileChannel channel
+  - final String path
+  - final Object closeLock = new Object()
+  - volatile boolean closed = false
+  + FileOutputStream(String name, boolean append) throws FileNotFoundException
+  + FileOutputStream(File file) throws FileNotFoundException
+  + FileOutputStream(File file, boolean append) throw FileNotFoundException
+  + FileOutputStream(FileDescriptor fdObj)
+  - native void open(String name, boolean append)
+  - native void write(int b, boolean append) throws IOException
+  + void write(int b) throws IOException
+  - native void writeBytes(byte b[], int off, int len, boolean append) throws IOException
+  + void write(byte b[]) throws IOException
+  + void write(byte b[], int off, int len) throws IOException
+  + void close() throws IOException
+  + FileDescriptor getFD() throws IOException
+  + FileChannel getChannel()
+  # void finalize() throws IOException
+  - native void close0() throws IOException
+  - {static} native void initIDs()
+}
+
+class FilterOutputStream extends OutputStream {
+  # OutputStream out
+  + FilterOutputStream(OutputStream out)
+  + void write(int b) throws IOException
+  + void write(byte b[]) throws IOException
+  + void write(byte b[], int off, int len) throws IOException
+  + void flush() throws IOException
+  + void close() throws IOException
+}
+
+class SocketOutputStream extends FileOutputStream {
+  - AbstractPlainSocketImpl impl
+  - byte temp[] = new byte[1]
+  - Socket socket = null
+  ~ SocketOutputStream(AbstractPlainSocketImpl impl) throws IOException
+  + final FileChannel getChannel()
+  - native void socketWrite0(FileDescriptor fd, byte[] b, int off, int len) throws IOException
+  - void socketWrite(byte b[], int off, int len) throws IOException
+  + void write(int b) throws IOException
+  + void write(byte b[]) throws IOException
+  + void write(byte b[], int off, int len) throws IOException
+  + void close() throws IOException
+  ~ void finalize()
+  - native {static} void init()
+}
+
+class BufferedOutputStream extends FilterOutputStream {
+  # byte buf[]
+  # int count
+  + BufferedOutputStream(OutputStream out)
+  + BufferedOutputStream(OutputStream out, int size)
+  - void flushBuffer() throws IOException
+  + synchronized void write(int b) throws IOException
+  + synchronized void write(byte b[], int off, int len) throws IOException
+  + synchronized void flush() throws IOException
+}
+#+end_src
+
+#+RESULTS:
+[[file:io.png]]
+* Writer
+#+begin_src plantuml :file writer.png
+abstract class Writer implements Appendable, Closeable, Flushable {
+  - char[] writeBuffer;
+  - {static} final int WRITE_BUFFER_SIZE = 1024;
+  # Object lock
+  # Writer()
+  # Writer(Object lock)
+  + void write(int c) throws IOException
+  + void write(char cbuf[]) throws IOException
+  + abstract void write(char cbuf[], int off, int len) throws IOException
+  + void write(String str) throws IOException
+  + void write(String str, int off, int len) throws IOException
+  + Writer append(CharSequence csq) throws IOException
+  + Writer append(CharSequence csq, int start, int end) throws IOException
+  + Writer append(char c) throws IOException
+  + abstract void flush() throws IOException
+  + abstract void close() throws IOException
+}
+
+class OutputStreamWriter extends Writer {
+  - final StreamEncoder se
+  + OutputStreamWriter(OutputStream out, String charsetName) throws UnsupportedEncodingException
+  + OutputStreamWriter(OutputStream out)
+  + OutputStreamWriter(OutputStream out, Charset cs)
+  + OutputStreamWriter(outputStream out, CharsetEncoder enc)
+  + String getEncoding()
+  # void flushBuffer()
+  + void write(int c) throws IOException
+  + void write(char cbuf[], int off, int len) throws IOException
+  + void write(String str, int off, int len) throws IOException
+  + void flush() throws IOException
+  + void close() throws IOException
+}
+
+abstract class FilterWriter extends Writer {
+  # Writer out
+  # FilterWriter(Writer out)
+  + void write(int c) throws IOException
+  + void write(char cbuf[], int off, int len) throws IOException
+  + void write(String str, int off, int len) throws IOException
+  + void flush() throws IOException
+  + void close() throws IOException
+}
+
+class FileWriter extends OutputStreamWriter {
+  + FileWriter(String fileName) throws IOException
+  + FileWriter(String fileName, boolean append) throws IOException
+  + FileWriter(File file) throws IOException
+  + FileWriter(File file, boolean append) throws IOException
+  + FIleWriter(FileDescriptor fd)
+}
+#+end_src
+
+#+RESULTS:
+[[file:writer.png]]

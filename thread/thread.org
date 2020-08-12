@@ -1,0 +1,2 @@
+* 参考资料
+- [[https://www.throwable.club/2020/08/04/java-concurrency-thread-state/][Java线程生命周期与状态切换]]

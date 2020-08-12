@@ -1,0 +1,176 @@
+* 参考资料
+1. [[https://tech.meituan.com/2016/06/24/java-hashmap.html][Java 8系列之重新认识HashMap]]
+
+* HashMap 类图
+#+begin_src plantuml :file ./hashmap_arch.png
+interface Map<K,V> {
+  + {abstract} int size()
+  + {abstract} boolean isEmpty()
+  + {abstract} boolean containsKey(Object key)
+  + {abstract} boolean containsValue(Object value)
+  + {abstract} V get(Object key)
+  + {abstract} V put(K Key, V vaule)
+  + {abstract} V remove(Object key)
+  + {abstract} void putAll(Map<? extends K, ? extends V> m)
+  + {abstract} void clear()
+  + {abstract} Set<K> keySet()
+  + {abstract} Collection<V> values()
+  + {abstract} Set<Map.Entry<K, V>> entrySet()
+  + {abstract} boolean equals(Object o)
+  + {abstract} int hashCode()
+  + V getOrDefault(Object key, V defaultValue)
+  + void forEach(BiConsumer<? super K, ? super V> action)
+  + void replaceAll(BiFunction<? super K, ? super V> function)
+  + V putIfAbsent(K key, V value)
+  + boolean remove(Object key, Object value)
+  + boolean replace(K key, V oldValue, V newValue)
+  + V replace(K key, V value)
+  + V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFuction)
+  + V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)
+  + V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)
+  + V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction)
+}
+
+interface Entry<K,V> {
+  + {abstract} K getKey()
+  + {abstract} V getValue()
+  + {abstract} V setValue()
+  + {abstract} boolean equals(Object o)
+  + {abstract} int hashCode()
+}
+
+
+abstract class AbstractMap<K,V> implements Map {
+  ~ transient Set<K> keySet
+  ~ transient Collection<V> values
+  + Set<K> keySet()
+  + Collection<K> vaules()
+  + {abstract} Set<Entry<K,V>> entrySet()
+  + boolean equals(Object o)
+  + int hashCode()
+  + String toString()
+  # Object clone()
+  - {static} boolean eq(Object o1, Object o2)
+
+}
+
+class SimpleEntry<K,V> implements Entry {
+  - K key
+  - V value
+  + SimpleEntry(K key, V value)
+  + SimpleEntry(Entry<? extends K, ? extends V> entry)
+  + K getKey()
+  + V getValue()
+  + V setValue(V value)
+  + boolean equals(Object o)
+  + int hashCode()
+  + String toString()
+}
+
+class SimpleImmutableEntry<K,V> implements Entry {
+  - K key
+  - V value
+  + SimpleImmutableEntry(K key, V value)
+  + SimpleImmutableEntry(Entry<? extends K, ? extends V> entry)
+  + K getKey()
+  + V getValue()
+  + V setValue(V value)
+  + boolean equals(Object o)
+  + int hashCode()
+  + String toString()
+}
+
+class HashMap<K,V> extends AbstractMap implements Map, Cloneable, Serializable {
+  ~ int DEFAULT_INITIAL_CAPACITY = 1 << 4
+  ~ int MAXIMUM_CAPACITY = 1 << 30
+  ~ float DEFAULT_LOAD_FACTOR = 0.75f
+  ~ int TREEIFY_THRESHOLD = 8
+  ~ int UNTREEIFY_THRESHOLD = 6
+  ~ int MIN_TREEIFY_CAPACITY = 64
+  ~ {static} int hash(Object key)
+  ~ {static} Class<?> comparableClassFor(Object x)
+  ~ {static} int compareComparables(Class<?> kc, Object k, Object x)
+  ~ {static} int tableSizeFor(int cap)
+  ~ transient Node<K, V>[] table
+  ~ transient Set<Map.Entry<K,V>> entrySet
+  ~ transient int size
+  ~ transient int modCount
+  ~ int threshold
+  ~ float loadFactor
+  + HashMap(int initialCapacity, float loadFactor)
+  + HashMap(int initialCapacity)
+  + HashMap()
+  + HashMap(Map<? extends K, ? extends V> m)
+  ~ void putMapEntries(Map<? extends K, ? extends V> m, boolean evict)
+  + int size()
+  + boolean isEmpty()
+  + V get(Object key)
+  ~ Node<K,V> getNode(Object key)
+  + boolean containsKey(Object key)
+  + V put(K key, V value)
+  ~ V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict)
+  ~ Node<K,V>[] resize()
+  ~ void treeifyBin(Node<K,V>[] tab, int hash)
+  + void putAll(Map<? extends K, ? extends V> m)
+  + V remove(Object key)
+  ~ Node<K,V> removeNode(int hash, Object key, Object value, boolean matchValue, boolean movable)
+  + void clear()
+  + boolean containsValue(Object vlaue)
+  + Set<K> keySet()
+  ~ <T> T[] prepareArray(T[] a)
+  ~ <T> T[] keysToArray(T[] a)
+  ~ <T> T[] valuesToArray(T[] a)
+  + Collection<V> values()
+  + Set<Entry<K,V>> entrySet()
+  + V getOrDefault(Object key, V defaultValue)
+  + V putIfAbsent(K key, V value)
+  + boolean remove(Object key, Object value)
+  + boolean replace(K key, V oldValue, V newValue)
+  + V replace(K key, V value)
+  + V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFuction)
+  + V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)
+  + V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)
+  + V merge(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction)
+  + void forEach(BiConsumer<? super K, ? super V> action)
+  + void replaceAll(Bifunction<? super K, ? super V, ? extends V> function)
+  + Object clone()
+  ~ float loadFactor()
+  ~ int capacity
+  - void writeObject(ObjectOutputStream s)
+  - void readObject(ObjectInputStream s)
+  ~ void afterNodeAccess(Node<K,V> p)
+  ~ void afterNodeInsertion(boolean evict)
+  ~ void afterNodeRemoval(Node<K,V> p)
+
+}
+
+class Node<K,V> implements Entry {
+  ~ int hash
+  ~ K key
+  ~ V value
+  ~ Node<K,V> next
+
+  ~ Node(int hash, K key, V value, Node<K,V> next)
+  + K getKey()
+  + V getValue()
+  + String toString()
+  + int hashCode()
+  + V setValue(V newValue)
+  + boolean equals(Object o)
+}
+
+class EntrySet extends AbstractSet {
+  + int size()
+  + void clear()
+  + Iterator<Entry<K,V>> iterator()
+  + boolean contains(Object o)
+  + boolean remove(Object o)
+  + Spliterator<Entry<K,V>> spliterator()
+  + void forEach(Consumer<? super Entry<K,V>> action)
+}
+
+#+end_src
+
+#+RESULTS:
+[[file:./hashmap_arch.png]]
+

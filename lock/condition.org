@@ -1,0 +1,30 @@
+#+begin_src plantuml :file condition.png
+interface Condition {
+  + void await()
+  + void awaitUninterruptibly()
+  + long awaitNanos(long nanosTimeout)
+  + boolean await(long time, TimeUnit unit)
+  + boolean awaitUntil(Date deadline)
+  + void signal()
+  + void signalAll()
+}
+
+class ConditionObject implements Condition {
+  - Node firstWaiter
+  - Node lastWaiter
+  + ConditionObject()
+  - Node addConditionWaiter()
+  - void doSignal(Node first)
+  - void doSignalAll(Node first)
+  - void unlinkCancelledWaiters()
+  + void signal()
+  + void signalAll()
+  + void awaitUninterruptibly()
+  - int checkInterruptWhileWaiting(Node node)
+  - void reportInterruptAfterWait(int interruptMode)
+  + void await()
+  + long awaitNanos(long nanosTimeout)
+  + boolean awaitUntil(Date deadline)
+
+}
+#+end_src

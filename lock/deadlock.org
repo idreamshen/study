@@ -1,0 +1,17 @@
+* 产生死锁的四个条件
+1. 禁止抢占（no preemption）：系统资源不能被强制从一个进程中退出。
+2. 持有和等待（hold and wait）：一个进程可以在等待时持有系统资源。
+3. 互斥（mutual exclusion）：资源只能同时分配给一个进程，无法多个进程共享。
+4. 循环等待（circular waiting）：一系列进程互相持有其他进程所需要的资源。
+
+* 死锁预防
+1. 以确定的顺序获得锁
+2. 超时放弃
+   
+延伸：[[https://zh.wikipedia.org/wiki/%E9%93%B6%E8%A1%8C%E5%AE%B6%E7%AE%97%E6%B3%95][银行家算法]]
+
+* 参考资料
+1. [[https://zh.wikipedia.org/wiki/%E6%AD%BB%E9%94%81][死锁]]
+2. [[https://en.wikipedia.org/wiki/Deadlock][Deadlock]]
+3. [[https://juejin.im/post/5aaf6ee76fb9a028d3753534][Java面试必问-死锁终极篇]]
+

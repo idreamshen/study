@@ -1,0 +1,255 @@
+* Arch
+** OutputArchive
+#+begin_src plantuml :file ./OutputArchive.png
+interface OutputArchive {
+  + void writeByte(byte b, String tag) throws IOException;
+  + void writeBool(boolean b, String tag) throws IOException;
+  + void writeInt(int i, String tag) throws IOException;
+  + void writeLong(long l, String tag) throws IOException;
+  + void writeFloat(float f, String tag) throws IOException;
+  + void writeDouble(double d, String tag) throws IOException;
+  + void writeString(String s, String tag) throws IOException;
+  + void writeBuffer(byte[] buf, String tag) throws IOException;
+  + void writeRecord(Record r, String tag) throws IOException;
+  + void startRecord(Record r, String tag) throws IOException;
+  + void endRecord(Record r, String tag) throws IOException;
+  + void startVector(List<?> v, String tag) throws IOException;
+  + void endVector(List<?> v, String tag) throws IOException;
+  + void startMap(TreeMap<?, ?> v, String tag) throws IOException;
+  + void endMap(TreeMap<?, ?> v, String tag) throws IOException;
+}
+
+class ToStringOutputArchive implements OutputArchive {
+  - PrintStream stream
+  - boolean isFirst = true
+  - void throwExceptionOnError(String tag)
+  - void printCommaUnlessFirst()
+  + ToStringOutputArchive(OutputStream out) throws UnsupportedEncodingException
+  + void writeByte(byte b, String tag) throws IOException;
+  + void writeBool(boolean b, String tag) throws IOException;
+  + void writeInt(int i, String tag) throws IOException;
+  + void writeLong(long l, String tag) throws IOException;
+  + void writeFloat(float f, String tag) throws IOException;
+  + void writeDouble(double d, String tag) throws IOException;
+  + void writeString(String s, String tag) throws IOException;
+  + void writeBuffer(byte[] buf, String tag) throws IOException;
+  + void writeRecord(Record r, String tag) throws IOException;
+  + void startRecord(Record r, String tag) throws IOException;
+  + void endRecord(Record r, String tag) throws IOException;
+  + void startVector(List<?> v, String tag) throws IOException;
+  + void endVector(List<?> v, String tag) throws IOException;
+  + void startMap(TreeMap<?, ?> v, String tag) throws IOException;
+  + void endMap(TreeMap<?, ?> v, String tag) throws IOException;
+  - {static} String escapeString(String s)
+  - {static} String escapeBuffer(byte[] barr)
+}
+
+class BinaryOutputArchive implements OutputArchive {
+  - ByteBuffer bb = ByteBuffer.allocate(1024)
+  - DataOutput out
+  + BinaryOutputArchive(DataOutput out) throws UnsupportedEncodingException
+  + void writeByte(byte b, String tag) throws IOException;
+  + void writeBool(boolean b, String tag) throws IOException;
+  + void writeInt(int i, String tag) throws IOException;
+  + void writeLong(long l, String tag) throws IOException;
+  + void writeFloat(float f, String tag) throws IOException;
+  + void writeDouble(double d, String tag) throws IOException;
+  + void writeString(String s, String tag) throws IOException;
+  + void writeBuffer(byte[] buf, String tag) throws IOException;
+  + void writeRecord(Record r, String tag) throws IOException;
+  + void startRecord(Record r, String tag) throws IOException;
+  + void endRecord(Record r, String tag) throws IOException;
+  + void startVector(List<?> v, String tag) throws IOException;
+  + void endVector(List<?> v, String tag) throws IOException;
+  + void startMap(TreeMap<?, ?> v, String tag) throws IOException;
+  + void endMap(TreeMap<?, ?> v, String tag) throws IOException;
+  - ByteBuffer stringToByteBuffer(CharSequence s)
+}
+
+interface Record {
+  + void serialize(OutputArchive archive, String tag) throws IOException
+  + void deserialize(InputArchive archive, String tag) throws IOException
+}
+#+end_src
+
+#+RESULTS:
+[[file:~/OutputArchive.png]]
+
+
+** InputArchive
+#+begin_src plantuml :file ./InputArchive.png
+interface InputArchive {
+  + byte readByte(String tag) throws IOException
+  + boolean readBool(String tag) throws IOException
+  + int readInt(String tag) throws IOException
+  + long readLong(String tag) throws IOException
+  + float readFloat(String tag) throws IOException
+  + double readDouble(String tag) throws IOException
+  + String readString(String tag) throws IOException
+  + byte[] readBuffer(String tag) throws IOException
+  + void readRecord(Record r, String tag) throws IOException
+  + void startRecord(String tag) throws IOException
+  + void endRecord(String tag) throws IOException
+  + Index startVector(String tag) throws IOException
+  + void endVector(String tag) throws IOException
+  + Index startMap(String tag) throws IOException
+  + void endMap(String tag) throws IOException
+
+}
+
+class BinaryInputArchive implements InputArchive {
+  + {static} String UNREASONBLE_LENGTH = "Unreasonable length = "
+  + {static} int maxBuffer = Integer.getInteger("jute.maxbuffer", 0xfffff);
+  - {static} int extraMaxBuffer
+  - DataInput in;
+  - int maxBufferSize
+  - int extraMaxBufferSize
+
+  + {static} BinaryInputArchive getArchive(InputStream strm)
+  + BinaryInputArchive(DataInput in)
+  + BinaryInputArchive(DataInput in, int maxBufferSize, int extraMaxBufferSize)
+  + byte readByte(String tag) throws IOException
+  + boolean readBool(String tag) throws IOException
+  + int readInt(String tag) throws IOException
+  + long readLong(String tag) throws IOException
+  + float readFloat(String tag) throws IOException
+  + double readDouble(String tag) throws IOException
+  + String readString(String tag) throws IOException
+  + byte[] readBuffer(String tag) throws IOException
+  + void readRecord(Record r, String tag) throws IOException
+  + void startRecord(String tag) throws IOException
+  + void endRecord(String tag) throws IOException
+  + Index startVector(String tag) throws IOException
+  + void endVector(String tag) throws IOException
+  + Index startMap(String tag) throws IOException
+  + void endMap(String tag) throws IOException
+  - void checkLength(int len) throws IOException
+}
+
+interface Index {
+  + boolean done()
+  + void incr()
+}
+
+class BinaryIndex implements Index {
+  - int nelems
+
+  BinaryIndex(int nelems)
+  + boolean done()
+  + void incr()
+}
+
+#+end_src
+
+#+RESULTS:
+[[file:~/InputArchive.png]]
+
+
+** TxnLog
+#+begin_src plantuml :file ./TxnLog.png
+interface TxnLog extends Closeable {
+  + void setServerStats(ServerStats serverStats)
+  + void rollLog() throws IOException
+  + boolean append(TxnHeader hdr, Record r) throws IOException
+  + boolean append(TxnHeader hdr, Record r, TxnDigest digest) throws IOException
+  + TxnIterator read(long zxid) throws IOException
+  + long getLastLoggedZxid() throws IOException
+  + boolean truncate(long zxid) throws IOException
+  + long getDbId() throws IOException
+  + void commit() throws IOException
+  + long getTxnLogSyncElapsedTime()
+  + void close() throws IOException
+  + void setTotalLogSize(long size)
+  + long getTotalLogSize()
+}
+
+interface TxnIterator extends Closeable {
+  + TxnHeader getHeader()
+  + Record getTxn()
+  + TxnDigest getDigest()
+  + boolean next() throws IOException
+  + void close() throws IOException
+  + long getStorageSize() throws IOException
+}
+
+class FileTxnLog implements TxnLog {
+  
+  - {static} Logger LOG
+  + {static} int TXNLOG_MAGIC = ByteBuffer.wrap("ZKLG".getBytes()).getInt()
+  + {static} int VERSION = 2
+  + {static} String LOG_FILE_PREFIX = "log"
+  ~ {static} String FSYNC_WARNING_THRESHOLD_MS_PROPERTY = "fsync.warningthresholdms"
+  ~ {static} String ZOOKEEPER_FSYNC_WARNING_THRESHOLD_MS_PROPERTY = "zookeeper." + FSYNC_WARNING_THRESHOLD_MS_PROPERTY
+  - {static} long fsyncWarningThresholdMS
+  - {static} String txnLogSizeLimitSetting = "zookeeper.txnLogSizeLimitInKb"
+  - {static} long txnLogSizeLimit = -1
+  ~ long lastZxidSeen
+  ~ volatile BufferedOutputStream logStream
+  ~ volatile OutputArchive oa
+  ~ volatile FileOutputStream fos
+  ~ File logDir
+  - final boolean forceSync
+  ~ long dbId
+  - final Queue<FileOutputStream> streamsToFlush
+  ~ File logFileWrite
+  - FilePadding filePadding
+  - ServerStats serverStats;
+  - volatile long syncElapsedMS
+  - long prevLogsRunningTotal
+  + FileTxnLog(File logDir)
+  + {static} void setPreallocSize(long size)
+  + synchronized void setServerStats(ServerStats serverStats)
+  + {static} void setTxnLogSizeLimit(long size)
+  + synchronized long getCurrentLogSize()
+  + synchronized void setTotalLogSize(long size)
+  # Checksum makeChecksumAlgorithm()
+  + synchronized void rollLog() throws IOException
+  + synchronized void close() throws IOException
+  + synchronized boolean append(TxnHeader hdr, Record txn) throws IOException
+  + synchronized boolean append(TxnHeader hdr, Record txn, TxnDigest digest) throws IOException
+  + long getLastLoggedZxid()
+  - void close(TxnIterator itr)
+  + synchronized void commit() throws IOException
+  + long getTxnLogSyncElapsedTime()
+  + TxnIterator read(long zxid) throws IOException
+  + TxnIterator read(long zxid, boolean fastForward) throws IOException
+  + boolean truncate(long zxid) throws IOException
+  - {static} FileHeader readHeader(File file) throws IOException
+  + long getDbId() throws IOException
+  + boolean isForceSync()
+}
+
+class FileTxnIterator implements TxnIterator {
+  ~ File logDir
+  ~ long zxid
+  ~ TxnHeader hdr
+  ~ Record record
+  ~ TxnDigest digest
+  ~ File logFile
+  ~ InputArchive ia
+  ~ {static} final String CRC_ERROR = "CRC check failed"
+  ~ PositionInputStream inputStream
+  - ArrayList<File> storedFiles
+  + FileTxnIterator(File logDir, long zxid, boolean fastForward) throws IOException
+  + FileTxnIterator(File logDir, long zxid) throws IOException
+  ~ void init() throws IOException
+  + long getStorageSize()
+  - boolean goToNextLog() throws IOException
+  # void inStreamCreated(InputArchive ia, InputStream is) throws IOException
+  # void InputArchive createInputArchive(File logFile) throws IOException
+  # Checksum makeChecksumAlgorithm()
+  + boolean next() throws IOException
+  + TxnHeader getHeader()
+  + Record getTxn()
+  + TxnDigest getDigest()
+  + void close() throws IOException
+}
+#+end_src
+
+#+RESULTS:
+[[file:./TxnLog.png]]
+
+
+* 参考资料
+1. [[https://zhuanlan.zhihu.com/p/134549250][腾讯 ZooKeeper 源码和实践揭秘]]
+2. [[https://www.cnblogs.com/leesf456/p/6278853.html][【Zookeeper】源码分析之序列化]]
