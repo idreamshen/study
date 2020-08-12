@@ -6,7 +6,7 @@
   - [ ] Mysql 索引 abc 复合索引
 - [1/4] JVM
   - [X] [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
-  - [ ] JVM GC 算法
+  - [ ] [[file:jvm/jvm-gc.org][JVM GC 算法]]
   - [ ] Java 类加载过程
   - [ ] Java 类加载机制
 - [0/9] JAVA 并发

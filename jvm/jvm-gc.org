@@ -1,0 +1,41 @@
+#+TITLE: JVM GC
+
+* 定义
+垃圾收集 Garbage Collection 简称为 GC。内存垃圾回收主要集中于 Java 堆和方法区中。
+
+* 对象存活判断
+两种方式
+1. 引用计数
+2. 可达性分析（Reachability Analysis）
+
+GC Roots
+1. 虚拟机栈中引用的对象
+2. 方法区中类静态属性实体引用的对象
+3. 方法区中常量引用的对象
+4. 本地方法栈中JNI引用的对象
+
+* 垃圾收集算法
+1. 标记-清除算法
+2. 复制算法
+3. 标记-压缩算法
+4. 分代收集算法
+
+* 垃圾收集器
+1. Serial 收集器
+2. ParNew 收集器
+3. Parallel 收集器
+4. parallel Old 收集器
+5. CMS 收集器
+6. G1 收集器
+
+默认垃圾回收器为 ParallelGC
+#+begin_src sh :exports both
+java -XX:+PrintCommandLineFlags -version
+#+end_src
+
+#+RESULTS:
+: -XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC
+
+* 参考资料
+- [[https://www.cnblogs.com/ityouknow/p/5614961.html][jvm系列(三):java GC算法 垃圾收集器]]
+- [[https://my.oschina.net/hosee/blog/644085][JVM 垃圾回收机制]]
