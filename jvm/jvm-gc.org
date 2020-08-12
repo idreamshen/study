@@ -51,7 +51,7 @@ GC Roots
 
 * JDK 8 默认垃圾收集器参数
 =-XX:+UseParallelGC=
-#+begin_src sh :exports: both
+#+begin_src sh :exports both
   java -XX:+PrintCommandLineFlags -version
 #+end_src
 
