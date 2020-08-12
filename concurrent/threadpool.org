@@ -1,5 +1,5 @@
 * UML
-#+begin_src plantuml :file threadpool.png :exports result
+#+begin_src plantuml :file threadpool.png :exports results
 interface Executor {
   + void execute(Runnable command)
 }
