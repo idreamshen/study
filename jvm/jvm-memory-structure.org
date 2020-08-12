@@ -7,11 +7,11 @@
 +------------------------------------------+-------------------+-----------------------------------+--------------------------------------|
 |            Young Generation              |   Old Generation  |      Permanent Generation         |            Code Cache                |
 +---------+------------+------------+------+---------+---------+-------------------------+---------+---------------------+----------------|
-|         |            |            |      |         |         |  Runtime Constant Pool  |         |    Thread 1..N      | Compile        |
+|         |            |            |      |         |         |  Runtime Constant Pool  |         |    Thread 1..N      |     Compile    |
 |         |            |            |      |         |         +-------------------------+         +----+-------+--------+----------------+
-| Virtual | From       | To         | Eden | Tenured | Virtual |  Field & Method Data    | Virtual |    |       |        | Nativee        |
+| Virtual | From       | To         | Eden | Tenured | Virtual |  Field & Method Data    | Virtual |    |       |        |     Native     |
 |         | Survivor 0 | Survivor 1 |      |         |         +-------------------------+         | PC | Stack | Native +----------------+
-|         |            |            |      |         |         |         Code            |         |    |       | Stack  | Virtual        |
+|         |            |            |      |         |         |         Code            |         |    |       | Stack  |     Virtual    |
 +---------+------------+------------+------+---------+---------+-------------------------+---------+----+----------------+----------------+
 #+end_src
 
