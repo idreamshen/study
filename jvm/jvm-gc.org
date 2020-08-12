@@ -20,22 +20,47 @@ GC Roots
 3. 标记-压缩算法
 4. 分代收集算法
 
-* 垃圾收集器
-1. Serial 收集器
-2. ParNew 收集器
-3. Parallel 收集器
-4. parallel Old 收集器
-5. CMS 收集器
-6. G1 收集器
+* 垃圾收集器分类
+|--------+--------+------------+-------------------|
+| 年轻代 | Serial | ParNew     | Parallel Scavenge |
+|--------+--------+------------+-------------------|
+| 老年代 | CMS    | Serial Old | Parallel Old      |
+|--------+--------+------------+-------------------|
 
-默认垃圾回收器为 ParallelGC
-#+begin_src sh :exports both
-java -XX:+PrintCommandLineFlags -version
+|-------------------+--------------|
+| 年轻代            | 老年代       |
+|-------------------+--------------|
+| Serial            | CMS          |
+| Serial            | Serial Old   |
+| ParNew            | CMS          |
+| ParNew            | Serial Old   |
+| Parallel Scavenge | Serial Old   |
+| Parallel Scavenge | Parallel Old |
+|-------------------+--------------|
+
+* 垃圾收集器命令参数对照
+|-------------------------+----------------------------------|
+| 参数                    | 收集器                           |
+|-------------------------+----------------------------------|
+| -XX:+UseSerialGC        | Serial + Serial Old              |
+| -XX:+UseParNewGC        | ParNew + Serial Old              |
+| -XX:+UseConcMarkSweepGC | ParNew + CMS + Serial Old        |
+| -XX:+UseParallelGC      | Parallel Scavenge + Serial Old   |
+| -XX:+UseParallelOldGC   | Parallel Scavenge + Parallel Old |
+|-------------------------+----------------------------------|
+
+* JDK 8 默认垃圾收集器参数
+=-XX:+UseParallelGC=
+#+begin_src sh :exports: both
+  java -XX:+PrintCommandLineFlags -version
 #+end_src
 
 #+RESULTS:
 : -XX:InitialHeapSize=268435456 -XX:MaxHeapSize=4294967296 -XX:+PrintCommandLineFlags -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseParallelGC
 
+
 * 参考资料
 - [[https://www.cnblogs.com/ityouknow/p/5614961.html][jvm系列(三):java GC算法 垃圾收集器]]
 - [[https://my.oschina.net/hosee/blog/644085][JVM 垃圾回收机制]]
+- [[http://bigdataer.net/?p=474][Conflicting collector combinations in option list]]
+- [[https://blogs.oracle.com/jonthecollector/our-collectors][Our Collectors]]
