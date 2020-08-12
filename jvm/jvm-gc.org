@@ -21,26 +21,26 @@ GC Roots
 4. 分代收集算法
 
 * 垃圾收集器分类
-|--------+--------+------------+-------------------|
-| 年轻代 | Serial | ParNew     | Parallel Scavenge |
-|--------+--------+------------+-------------------|
-| 老年代 | CMS    | Serial Old | Parallel Old      |
-|--------+--------+------------+-------------------|
+|------------------+--------+------------+-------------------|
+| Young Generation | Serial | ParNew     | Parallel Scavenge |
+|------------------+--------+------------+-------------------|
+| Old Generation   | CMS    | Serial Old | Parallel Old      |
+|------------------+--------+------------+-------------------|
 
-|-------------------+--------------|
-| 年轻代            | 老年代       |
-|-------------------+--------------|
-| Serial            | CMS          |
-| Serial            | Serial Old   |
-| ParNew            | CMS          |
-| ParNew            | Serial Old   |
-| Parallel Scavenge | Serial Old   |
-| Parallel Scavenge | Parallel Old |
-|-------------------+--------------|
+|-------------------+----------------|
+| Young Generation  | Old Generation |
+|-------------------+----------------|
+| Serial            | CMS            |
+| Serial            | Serial Old     |
+| ParNew            | CMS            |
+| ParNew            | Serial Old     |
+| Parallel Scavenge | Serial Old     |
+| Parallel Scavenge | Parallel Old   |
+|-------------------+----------------|
 
 * 垃圾收集器命令参数对照
 |-------------------------+----------------------------------|
-| 参数                    | 收集器                           |
+| Command Line Flag       | Garbage Collectors               |
 |-------------------------+----------------------------------|
 | -XX:+UseSerialGC        | Serial + Serial Old              |
 | -XX:+UseParNewGC        | ParNew + Serial Old              |
