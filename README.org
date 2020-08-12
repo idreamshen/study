@@ -4,8 +4,8 @@
   - [ ] Mysql 索引 B+ Tree 数据结构
   - [ ] Mysql 数据存储原理
   - [ ] Mysql 索引 abc 复合索引
-- [0/4] JVM
-  - [ ] JVM 内存结构
+- [1/4] JVM
+  - [X] [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
   - [ ] JVM GC 算法
   - [ ] Java 类加载过程
   - [ ] Java 类加载机制
