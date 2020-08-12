@@ -44,7 +44,7 @@
   - Zookeeper 分布式锁
   
 - 设计模式
-  - 单例模式
+  - [[file:design/pattern/singleton/singleton.org][单例模式]]
   - 责任链模式
   - 模版模式
 
