@@ -1,4 +1,6 @@
-* OutputStream
+#+TITLE: OutputStream
+
+* UML
 #+begin_src plantuml :file outputstream.png :exports results
 abstract class OutputStream implements Closeable, Flushable {
   + abstract void write(int b) throws IOException
@@ -73,59 +75,3 @@ class BufferedOutputStream extends FilterOutputStream {
 
 #+RESULTS:
 [[file:outputstream.png]]
-* Writer
-#+begin_src plantuml :file writer.png :exports results
-abstract class Writer implements Appendable, Closeable, Flushable {
-  - char[] writeBuffer;
-  - {static} final int WRITE_BUFFER_SIZE = 1024;
-  # Object lock
-  # Writer()
-  # Writer(Object lock)
-  + void write(int c) throws IOException
-  + void write(char cbuf[]) throws IOException
-  + abstract void write(char cbuf[], int off, int len) throws IOException
-  + void write(String str) throws IOException
-  + void write(String str, int off, int len) throws IOException
-  + Writer append(CharSequence csq) throws IOException
-  + Writer append(CharSequence csq, int start, int end) throws IOException
-  + Writer append(char c) throws IOException
-  + abstract void flush() throws IOException
-  + abstract void close() throws IOException
-}
-
-class OutputStreamWriter extends Writer {
-  - final StreamEncoder se
-  + OutputStreamWriter(OutputStream out, String charsetName) throws UnsupportedEncodingException
-  + OutputStreamWriter(OutputStream out)
-  + OutputStreamWriter(OutputStream out, Charset cs)
-  + OutputStreamWriter(outputStream out, CharsetEncoder enc)
-  + String getEncoding()
-  # void flushBuffer()
-  + void write(int c) throws IOException
-  + void write(char cbuf[], int off, int len) throws IOException
-  + void write(String str, int off, int len) throws IOException
-  + void flush() throws IOException
-  + void close() throws IOException
-}
-
-abstract class FilterWriter extends Writer {
-  # Writer out
-  # FilterWriter(Writer out)
-  + void write(int c) throws IOException
-  + void write(char cbuf[], int off, int len) throws IOException
-  + void write(String str, int off, int len) throws IOException
-  + void flush() throws IOException
-  + void close() throws IOException
-}
-
-class FileWriter extends OutputStreamWriter {
-  + FileWriter(String fileName) throws IOException
-  + FileWriter(String fileName, boolean append) throws IOException
-  + FileWriter(File file) throws IOException
-  + FileWriter(File file, boolean append) throws IOException
-  + FIleWriter(FileDescriptor fd)
-}
-#+end_src
-
-#+RESULTS:
-[[file:writer.png]]

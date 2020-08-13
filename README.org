@@ -22,6 +22,7 @@
   - HashMap
   - HashTable
 - JAVA IO
+  - [[file:io/outputstream/outputstream.org][OutputStream]]
 - Redis
   - Redis Cluster
   - Redis 持久化方式
