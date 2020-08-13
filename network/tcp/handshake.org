@@ -14,3 +14,6 @@
 : Connected to www.a.shifen.com.
 : Escape character is '^]'.
 : 
+
+* 参考资料
+- [[https://draveness.me/whys-the-design-tcp-three-way-handshake/][为什么 TCP 建立连接需要三次握手]]
