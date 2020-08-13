@@ -1,0 +1,2 @@
+* 参考资料
+- [[https://draveness.me/whys-the-design-os-virtual-memory/][为什么 Linux 需要虚拟内存]]
