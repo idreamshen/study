@@ -1,2 +1,3 @@
 * 参考资料
-https://blog.codinglabs.org/articles/theory-of-mysql-index.html
+- [[https://blog.codinglabs.org/articles/theory-of-mysql-index.html][MySQL索引背后的数据结构及算法原理]]
+- [[https://zhuanlan.zhihu.com/p/86137284][为什么生产环境中B+树的高度总是3-4层？]]
