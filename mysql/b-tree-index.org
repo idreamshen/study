@@ -1,3 +1,4 @@
 * 参考资料
 - [[https://blog.codinglabs.org/articles/theory-of-mysql-index.html][MySQL索引背后的数据结构及算法原理]]
 - [[https://www.jianshu.com/p/3578beed5a68][面试题：InnoDB中一棵B+树能存多少行数据？]]
+- [[https://www.jianshu.com/p/71700a464e97][B+树总结]]
