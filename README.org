@@ -1,7 +1,7 @@
 * 目录
 - Mysql
   - Mysql 事务特性
-  - Mysql 索引 B+ Tree 数据结构
+  - [[file:mysql/b-tree-index.org][Mysql 索引 B+ 树]]
   - Mysql 数据存储原理
   - Mysql 索引 abc 复合索引
 - JVM
