@@ -1,3 +1,52 @@
+* TCP 状态图
+#+begin_src example
+                                      
+                              +---------+ ---------\      active OPEN  
+                              |  CLOSED |            \    -----------  
+                              +---------+<---------\   \   create TCB  
+                                |     ^              \   \  snd SYN    
+                   passive OPEN |     |   CLOSE        \   \           
+                   ------------ |     | ----------       \   \         
+                    create TCB  |     | delete TCB         \   \       
+                                V     |                      \   \     
+                              +---------+            CLOSE    |    \   
+                              |  LISTEN |          ---------- |     |  
+                              +---------+          delete TCB |     |  
+                   rcv SYN      |     |     SEND              |     |  
+                  -----------   |     |    -------            |     V  
+ +---------+      snd SYN,ACK  /       \   snd SYN          +---------+
+ |         |<-----------------           ------------------>|         |
+ |   SYN   |                    rcv SYN                     |   SYN   |
+ |   RCVD  |<-----------------------------------------------|   SENT  |
+ |         |                    snd ACK                     |         |
+ |         |------------------           -------------------|         |
+ +---------+   rcv ACK of SYN  \       /  rcv SYN,ACK       +---------+
+   |           --------------   |     |   -----------                  
+   |                  x         |     |     snd ACK                    
+   |                            V     V                                
+   |  CLOSE                   +---------+                              
+   | -------                  |  ESTAB  |                              
+   | snd FIN                  +---------+                              
+   |                   CLOSE    |     |    rcv FIN                     
+   V                  -------   |     |    -------                     
+ +---------+          snd FIN  /       \   snd ACK          +---------+
+ |  FIN    |<-----------------           ------------------>|  CLOSE  |
+ | WAIT-1  |------------------                              |   WAIT  |
+ +---------+          rcv FIN  \                            +---------+
+   | rcv ACK of FIN   -------   |                            CLOSE  |  
+   | --------------   snd ACK   |                           ------- |  
+   V        x                   V                           snd FIN V  
+ +---------+                  +---------+                   +---------+
+ |FINWAIT-2|                  | CLOSING |                   | LAST-ACK|
+ +---------+                  +---------+                   +---------+
+   |                rcv ACK of FIN |                 rcv ACK of FIN |  
+   |  rcv FIN       -------------- |    Timeout=2MSL -------------- |  
+   |  -------              x       V    ------------        x       V  
+    \ snd ACK                 +---------+ delete TCB        +---------+
+     ------------------------>|TIME WAIT|------------------>| CLOSED  |
+                              +---------+                   +---------+
+#+end_src
+
 使用 =tcpdump= 分析与 www.baidu.com 连接时的三次握手
 #+begin_src sh :dir /sudo:: :results output :exports both
   tcpdump dst host www.baidu.com or src host www.baidu.com -c 3 -S -n & telnet www.baidu.com 443 << EOF
@@ -7,13 +56,16 @@
 #+end_src
 
 #+RESULTS:
-: Trying 182.61.200.6...
-: 22:02:42.702771 IP 192.168.2.102.62705 > 182.61.200.6.443: Flags [S], seq 308578415, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 828818586 ecr 0,sackOK,eol], length 0
-: 22:02:42.749010 IP 182.61.200.6.443 > 192.168.2.102.62705: Flags [S.], seq 782301551, ack 308578416, win 8192, options [mss 1448,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
-: 22:02:42.749043 IP 192.168.2.102.62705 > 182.61.200.6.443: Flags [.], ack 782301552, win 4096, length 0
+: Trying 180.101.49.12...
+: 14:19:58.823708 IP 172.17.0.177.54604 > 180.101.49.12.443: Flags [S], seq 2568427143, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 837554572 ecr 0,sackOK,eol], length 0
+: 14:19:58.836764 IP 180.101.49.12.443 > 172.17.0.177.54604: Flags [S.], seq 4144909673, ack 2568427144, win 8192, options [mss 1412,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
+: 14:19:58.836822 IP 172.17.0.177.54604 > 180.101.49.12.443: Flags [.], ack 4144909674, win 4096, length 0
 : Connected to www.a.shifen.com.
 : Escape character is '^]'.
 : 
 
 * 参考资料
 - [[https://draveness.me/whys-the-design-tcp-three-way-handshake/][为什么 TCP 建立连接需要三次握手]]
+- [[https://tools.ietf.org/html/rfc793][TRANSMISSION CONTROL PROTOCOL]]
+
+
