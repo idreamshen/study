@@ -67,8 +67,11 @@
 3. ~TCP B~ 返回 SYN ACK 包，并将 ~TCP B~ 自己的序号告诉 ~TCP A~，同时 ACK 设置为第二步中 ACK + 1
 4. ~TCP A~ 发送 ACK 包，SEQ 设置为第2步中的 SEQ + 1，同时 ACK 设置为第三步中的 SEQ + 1。至此，三次握手完成
 
-* tcpdump 分析
+* 使用 tcpdump 分析
 使用 =tcpdump= 分析与 www.baidu.com 连接时的三次握手
+
+进行连接建立
+#+name: tcpdump
 #+begin_src sh :dir /sudo:: :results output :exports both
   tcpdump dst host www.baidu.com or src host www.baidu.com -c 3 -S -n & telnet www.baidu.com 443 << EOF
   quit
@@ -76,14 +79,16 @@
   echo
 #+end_src
 
-#+RESULTS:
-: Trying 180.101.49.12...
-: 14:19:58.823708 IP 172.17.0.177.54604 > 180.101.49.12.443: Flags [S], seq 2568427143, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 837554572 ecr 0,sackOK,eol], length 0
-: 14:19:58.836764 IP 180.101.49.12.443 > 172.17.0.177.54604: Flags [S.], seq 4144909673, ack 2568427144, win 8192, options [mss 1412,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
-: 14:19:58.836822 IP 172.17.0.177.54604 > 180.101.49.12.443: Flags [.], ack 4144909674, win 4096, length 0
+抓包结果
+#+RESULTS: tcpdump
+: Trying 180.101.49.11...
+: 14:45:23.532094 IP 172.17.0.177.54997 > 180.101.49.11.443: Flags [S], seq 887424618, win 65535, options [mss 1460,nop,wscale 6,nop,nop,TS val 839074546 ecr 0,sackOK,eol], length 0
+: 14:45:23.547286 IP 180.101.49.11.443 > 172.17.0.177.54997: Flags [S.], seq 1198268201, ack 887424619, win 8192, options [mss 1412,nop,wscale 5,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,nop,sackOK,eol], length 0
+: 14:45:23.547339 IP 172.17.0.177.54997 > 180.101.49.11.443: Flags [.], ack 1198268202, win 4096, length 0
 : Connected to www.a.shifen.com.
 : Escape character is '^]'.
 : 
+
 
 * 参考资料
 - [[https://draveness.me/whys-the-design-tcp-three-way-handshake/][为什么 TCP 建立连接需要三次握手]]
