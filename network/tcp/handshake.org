@@ -47,6 +47,27 @@
                               +---------+                   +---------+
 #+end_src
 
+* 三次握手
+#+begin_src example
+      TCP A                                                TCP B
+
+  1.  CLOSED                                               LISTEN
+
+  2.  SYN-SENT    --> <SEQ=100><CTL=SYN>               --> SYN-RECEIVED
+
+  3.  ESTABLISHED <-- <SEQ=300><ACK=101><CTL=SYN,ACK>  <-- SYN-RECEIVED
+
+  4.  ESTABLISHED --> <SEQ=101><ACK=301><CTL=ACK>       --> ESTABLISHED
+
+  5.  ESTABLISHED --> <SEQ=101><ACK=301><CTL=ACK><DATA> --> ESTABLISHED
+#+end_src
+
+1. ~TCP A~ 处于关闭状态， ~TCP B~ 处于监听状态
+2. ~TCP A~ 发送 SYN 包，并将 ~TCP A~ 自己的 SEQ 序号告诉 ~TCP B~
+3. ~TCP B~ 返回 SYN ACK 包，并将 ~TCP B~ 自己的序号告诉 ~TCP A~，同时 ACK 设置为第二步中 ACK + 1
+4. ~TCP A~ 发送 ACK 包，SEQ 设置为第2步中的 SEQ + 1，同时 ACK 设置为第三步中的 SEQ + 1。至此，三次握手完成
+
+* tcpdump 分析
 使用 =tcpdump= 分析与 www.baidu.com 连接时的三次握手
 #+begin_src sh :dir /sudo:: :results output :exports both
   tcpdump dst host www.baidu.com or src host www.baidu.com -c 3 -S -n & telnet www.baidu.com 443 << EOF
