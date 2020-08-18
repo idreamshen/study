@@ -69,7 +69,7 @@ show databases;
   begin
       declare i int default 1;
       while i <= 1000 do
-          insert into game_match_player (id, `match_id`, `nickname`) values (i, floor(i/10)+1, concat("player-", i));
+          insert into game_match_player (id, `match_id`, `nickname`) values (i, floor((i - 1) / 10) +1, concat("player-", i));
           set i = i + 1;
        end while;
   end $$
@@ -98,7 +98,7 @@ show databases;
 |  7 |        1 | player-7  |
 |  8 |        1 | player-8  |
 |  9 |        1 | player-9  |
-| 10 |        2 | player-10 |
+| 10 |        1 | player-10 |
 | 11 |        2 | player-11 |
 | 12 |        2 | player-12 |
 | 13 |        2 | player-13 |
@@ -108,9 +108,24 @@ show databases;
 | 17 |        2 | player-17 |
 | 18 |        2 | player-18 |
 | 19 |        2 | player-19 |
-| 20 |        3 | player-20 |
+| 20 |        2 | player-20 |
 
-* join
+* JOIN 效果测试
+** 驱动表为小表时的 explain
+#+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
+explain
+select count(*) from game_match gm
+left join game_match_player gmp
+on gm.id = gmp.match_id;
+#+end_src
+
+#+RESULTS:
+| id | select_type | table | partitions | type  | possible_keys | key          | key_len | ref                | rows | filtered | Extra       |
+|----+-------------+-------+------------+-------+---------------+--------------+---------+--------------------+------+----------+-------------|
+|  1 | SIMPLE      | gm    | NULL       | index | NULL          | PRIMARY      |       8 | NULL               |  100 |   100.00 | Using index |
+|  1 | SIMPLE      | gmp   | NULL       | ref   | idx_match_id  | idx_match_id |       8 | join_test_db.gm.id |   10 |   100.00 | Using index |
+
+
 ** 驱动表为大表时的 explain
 #+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
 explain
@@ -124,35 +139,6 @@ on gm.id = gmp.match_id;
 |----+-------------+-------+------------+--------+---------------+--------------+---------+---------------------------+------+----------+-------------|
 |  1 | SIMPLE      | gmp   | NULL       | index  | NULL          | idx_match_id |       8 | NULL                      | 1000 |   100.00 | Using index |
 |  1 | SIMPLE      | gm    | NULL       | eq_ref | PRIMARY       | PRIMARY      |       8 | join_test_db.gmp.match_id |    1 |   100.00 | Using index |
-
-** 驱动表为小表时的 explain
-#+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
-explain
-select count(*) from game_match gm
-left join game_match_player gmp
-on gm.id = gmp.match_id;
-#+end_src
-
-#+RESULTS:
-| id       | select_type | table                                                                                        | partitions | type   | possible_keys | key          | key_len | ref                       | rows | filtered | Extra       |
-|----------+-------------+----------------------------------------------------------------------------------------------+------------+--------+---------------+--------------+---------+---------------------------+------+----------+-------------|
-| 1        | SIMPLE      | gm                                                                                           | NULL       | index  | NULL          | PRIMARY      |       8 | NULL                      |  100 |   100.00 | Using index |
-| 1        | SIMPLE      | gmp                                                                                          | NULL       | ref    | idx_match_id  | idx_match_id |       8 | join_test_db.gm.id        |    9 |   100.00 | Using index |
-| NULL     |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| NULL     |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| id       | select_type | table                                                                                        | partitions | type   | possible_keys | key          | key_len | ref                       | rows | filtered | Extra       |
-| 1        | SIMPLE      | gmp                                                                                          | NULL       | index  | NULL          | idx_match_id |       8 | NULL                      | 1000 |   100.00 | Using index |
-| 1        | SIMPLE      | gm                                                                                           | NULL       | eq_ref | PRIMARY       | PRIMARY      |       8 | join_test_db.gmp.match_id |    1 |   100.00 | Using index |
-| NULL     |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| NULL     |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| count(*) |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| 999      |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| count(*) |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| 1000     |             |                                                                                              |            |        |               |              |         |                           |      |          |             |
-| Query_ID | Duration    | Query                                                                                        |            |        |               |              |         |                           |      |          |             |
-| 1        | 0.00055250  | select count(*) from game_match gm\nleft join game_match_player gmp\non gm.id = gmp.match_id |            |        |               |              |         |                           |      |          |             |
-| 2        | 0.00098350  | select count(*) from game_match_player gmp\nleft join game_match gm\non gm.id = gmp.match_id |            |        |               |              |         |                           |      |          |             |
-
 
 ** 性能对比
 #+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
@@ -175,12 +161,12 @@ on gm.id = gmp.match_id;
 #+RESULTS:
 | count(*) |            |                                                                                              |
 |----------+------------+----------------------------------------------------------------------------------------------|
-|      999 |            |                                                                                              |
+|     1000 |            |                                                                                              |
 | count(*) |            |                                                                                              |
 |     1000 |            |                                                                                              |
 | Query_ID |   Duration | Query                                                                                        |
-|        1 | 0.00061750 | select count(*) from game_match gm\nleft join game_match_player gmp\non gm.id = gmp.match_id |
-|        2 | 0.00100325 | select count(*) from game_match_player gmp\nleft join game_match gm\non gm.id = gmp.match_id |
+|        1 | 0.00081900 | select count(*) from game_match gm\nleft join game_match_player gmp\non gm.id = gmp.match_id |
+|        2 | 0.00101050 | select count(*) from game_match_player gmp\nleft join game_match gm\non gm.id = gmp.match_id |
 可以发现 SQL2 的耗时几乎是 SQL1 的两倍
 
 * 参考资料
