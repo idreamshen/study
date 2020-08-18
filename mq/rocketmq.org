@@ -1,0 +1,19 @@
+* 组件
+1. Name Server 集群
+2. Broker Master/Slave 集群
+3. Producer 集群
+4. Consumer 集群
+
+* 消息中间件功能
+** 发布、订阅
+** 消息优先级
+** Broker 端消息过滤
+** Consumer 端消息过滤
+** 消息持久化
+** 消息语义
+*** At least once (Rocket 只支持这种)
+*** Exactly only once
+** Broker Buffer 使用磁盘实现
+** 消息堆积（依赖 Broker Buffer 磁盘实现）
+** 事务消息
+** 定时消息
