@@ -107,9 +107,62 @@ int c = Integer.valueOf(1); // line 5
 11: invokestatic  #2                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
 14: astore_3
 #+end_src
+
 上述显示字节码最终均调用了 =Integer.valueOf= 这个方法。根据 =Integer.valueOf= 源码可知，在 -128 ~ 127 范围内， =Integer.valueOf= 方法返回的均是缓存对象，
 故使用 ~==~ 进行引用判断时， =a==b= =a==c= 均为 true。
+
+Integer.java 源码如下
+#+begin_src java
+  class Integer {
+
+      public static Integer valueOf(int i) {
+          if (i >= IntegerCache.low && i <= IntegerCache.high)
+              return IntegerCache.cache[i + (-IntegerCache.low)];
+          return new Integer(i);
+      }
+
+      /**
+       ,* 缓存
+       ,*/
+      private static class IntegerCache {
+          static final int low = -128;
+          static final int high;
+          static final Integer cache[];
+
+          static {
+              // high value may be configured by property
+              int h = 127;
+              String integerCacheHighPropValue =
+                  sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
+              if (integerCacheHighPropValue != null) {
+                  try {
+                      int i = parseInt(integerCacheHighPropValue);
+                      i = Math.max(i, 127);
+                      // Maximum array size is Integer.MAX_VALUE
+                      h = Math.min(i, Integer.MAX_VALUE - (-low) -1);
+                  } catch( NumberFormatException nfe) {
+                      // If the property cannot be parsed into an int, ignore it.
+                  }
+              }
+              high = h;
+
+              // 类加载期间完成缓存构造
+              cache = new Integer[(high - low) + 1];
+              int j = low;
+              for(int k = 0; k < cache.length; k++)
+                  cache[k] = new Integer(j++);
+
+              // range [-128, 127] must be interned (JLS7 5.1.7)
+              assert IntegerCache.high >= 127;
+          }
+
+          private IntegerCache() {}
+      }
+
+  }
+#+end_src
 
 
 * 参考资料
 - [[https://www.jianshu.com/p/6a8997560b05][通过javap命令分析java汇编指令]]
+- [[https://github.com/openjdk/jdk/blob/9a9add8825a040565051a09010b29b099c2e7d49/jdk/src/share/classes/java/lang/Integer.java][Integer.java]]
