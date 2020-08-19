@@ -1,10 +1,10 @@
 * 创建一个 Mysql Server
 #+begin_src sh
-  docker run -d --name mysql_test -p3306:3306 -eMYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
+  docker run -d --name mysql_test -v /tmp/mysql-data:/var/lib/mysql -p3306:3306 -eMYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
 #+end_src
 
 #+RESULTS:
-: 98fec8c7a206ab0ab79b3bf91200d44083e3a373ee6bf1164e5040a21d2085f8
+: 93021534a367996a672b451ceab62c64e52298bda10bb30384c1b5b2c03482d9
 
 * 初始化数据结构
 #+begin_src sql :engine mysql :dbhost 127.0.0.1 :dbuser root :exports both
@@ -53,22 +53,22 @@ show databases;
   truncate table game_match_player;
 
   delimiter $
-  drop procedure batch_insert_game_match;
+  drop procedure if exists batch_insert_game_match;
   create procedure batch_insert_game_match()
   begin
       declare i int default 1;
-      while i <= 100 do
+      while i <= 1000 do
           insert into game_match (id, `name`) values (i, concat("match-", i));
           set i = i + 1;
        end while;
   end $
 
   delimiter $$
-  drop procedure batch_insert_game_match_player;
+  drop procedure if exists batch_insert_game_match_player;
   create procedure batch_insert_game_match_player()
   begin
       declare i int default 1;
-      while i <= 1000 do
+      while i <= 10000 do
           insert into game_match_player (id, `match_id`, `nickname`) values (i, floor((i - 1) / 10) +1, concat("player-", i));
           set i = i + 1;
        end while;
@@ -76,39 +76,16 @@ show databases;
 
   call batch_insert_game_match();
   call batch_insert_game_match_player();
-  select * from game_match limit 5;
-  select * from game_match_player limit 20;
+  select count(*) from game_match;
+  select count(*) from game_match_player;
 #+end_src
 
 #+RESULTS:
-| id |     name |           |
-|----+----------+-----------|
-|  1 |  match-1 |           |
-|  2 |  match-2 |           |
-|  3 |  match-3 |           |
-|  4 |  match-4 |           |
-|  5 |  match-5 |           |
-| id | match_id | nickname  |
-|  1 |        1 | player-1  |
-|  2 |        1 | player-2  |
-|  3 |        1 | player-3  |
-|  4 |        1 | player-4  |
-|  5 |        1 | player-5  |
-|  6 |        1 | player-6  |
-|  7 |        1 | player-7  |
-|  8 |        1 | player-8  |
-|  9 |        1 | player-9  |
-| 10 |        1 | player-10 |
-| 11 |        2 | player-11 |
-| 12 |        2 | player-12 |
-| 13 |        2 | player-13 |
-| 14 |        2 | player-14 |
-| 15 |        2 | player-15 |
-| 16 |        2 | player-16 |
-| 17 |        2 | player-17 |
-| 18 |        2 | player-18 |
-| 19 |        2 | player-19 |
-| 20 |        2 | player-20 |
+| count(*) |
+|----------|
+|     1000 |
+| count(*) |
+|    10000 |
 
 * JOIN 效果测试
 ** 驱动表为小表时的 explain
@@ -120,10 +97,10 @@ on gm.id = gmp.match_id;
 #+end_src
 
 #+RESULTS:
-| id | select_type | table | partitions | type  | possible_keys | key          | key_len | ref                | rows | filtered | Extra       |
-|----+-------------+-------+------------+-------+---------------+--------------+---------+--------------------+------+----------+-------------|
-|  1 | SIMPLE      | gm    | NULL       | index | NULL          | PRIMARY      |       8 | NULL               |  100 |   100.00 | Using index |
-|  1 | SIMPLE      | gmp   | NULL       | ref   | idx_match_id  | idx_match_id |       8 | join_test_db.gm.id |   10 |   100.00 | Using index |
+| id | select_type | table | partitions | type  | possible_keys | key          | key_len | ref                |  rows | filtered | Extra       |
+|----+-------------+-------+------------+-------+---------------+--------------+---------+--------------------+-------+----------+-------------|
+|  1 | SIMPLE      | gm    | NULL       | index | NULL          | PRIMARY      |       8 | NULL               |  1000 |   100.00 | Using index |
+|  1 | SIMPLE      | gmp   | NULL       | ref   | idx_match_id  | idx_match_id |       8 | join_test_db.gm.id | 10000 |   100.00 | Using index |
 
 
 ** 驱动表为大表时的 explain
@@ -135,10 +112,10 @@ on gm.id = gmp.match_id;
 #+end_src
 
 #+RESULTS:
-| id | select_type | table | partitions | type   | possible_keys | key          | key_len | ref                       | rows | filtered | Extra       |
-|----+-------------+-------+------------+--------+---------------+--------------+---------+---------------------------+------+----------+-------------|
-|  1 | SIMPLE      | gmp   | NULL       | index  | NULL          | idx_match_id |       8 | NULL                      | 1000 |   100.00 | Using index |
-|  1 | SIMPLE      | gm    | NULL       | eq_ref | PRIMARY       | PRIMARY      |       8 | join_test_db.gmp.match_id |    1 |   100.00 | Using index |
+| id | select_type | table | partitions | type   | possible_keys | key          | key_len | ref                       |  rows | filtered | Extra       |
+|----+-------------+-------+------------+--------+---------------+--------------+---------+---------------------------+-------+----------+-------------|
+|  1 | SIMPLE      | gmp   | NULL       | index  | NULL          | idx_match_id |       8 | NULL                      | 10000 |   100.00 | Using index |
+|  1 | SIMPLE      | gm    | NULL       | eq_ref | PRIMARY       | PRIMARY      |       8 | join_test_db.gmp.match_id |     1 |   100.00 | Using index |
 
 ** 性能对比
 #+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
@@ -161,13 +138,61 @@ on gm.id = gmp.match_id;
 #+RESULTS:
 | count(*) |            |                                                                                              |
 |----------+------------+----------------------------------------------------------------------------------------------|
-|     1000 |            |                                                                                              |
+|    10000 |            |                                                                                              |
 | count(*) |            |                                                                                              |
-|     1000 |            |                                                                                              |
+|    10000 |            |                                                                                              |
 | Query_ID |   Duration | Query                                                                                        |
-|        1 | 0.00081900 | select count(*) from game_match gm\nleft join game_match_player gmp\non gm.id = gmp.match_id |
-|        2 | 0.00101050 | select count(*) from game_match_player gmp\nleft join game_match gm\non gm.id = gmp.match_id |
+|        1 | 0.00508600 | select count(*) from game_match gm\nleft join game_match_player gmp\non gm.id = gmp.match_id |
+|        2 | 0.00816075 | select count(*) from game_match_player gmp\nleft join game_match gm\non gm.id = gmp.match_id |
 可以发现 SQL2 的耗时几乎是 SQL1 的两倍
+
+* 性能差异分析
+** Mysql 相关配置
+#+begin_src sql :engine mysql :database join_test_db :dbhost 127.0.0.1 :dbuser root :exports both
+  show variables like 'innodb_page_size';
+
+  select
+      b.name, a.name, index_id, type, a.space, a.PAGE_NO
+  from
+      information_schema.INNODB_SYS_INDEXES a,
+      information_schema.INNODB_SYS_TABLES b
+  where
+      1=1
+      and a.table_id = b.table_id
+      and a.space <> 0
+      and b.`name` like "join_test_db%";
+#+end_src
+
+#+RESULTS:
+| Variable_name                  | Value        |          |      |       |         |
+|--------------------------------+--------------+----------+------+-------+---------|
+| innodb_page_size               | 16384        |          |      |       |         |
+| name                           | name         | index_id | type | space | PAGE_NO |
+| join_test_db/game_match        | PRIMARY      |       41 |    3 |    24 |       3 |
+| join_test_db/game_match_player | PRIMARY      |       42 |    3 |    25 |       3 |
+| join_test_db/game_match_player | idx_match_id |       43 |    0 |    25 |       4 |
+
+** 查看索引树高
+   #+begin_src sh :results scalar :exports both
+   echo 'game_match_primary'
+   docker exec mysql_test od -A x -t x1 -j 49216 -N 2 /var/lib/mysql/join_test_db/game_match.ibd
+   echo 'game_match_player_primary'
+   docker exec mysql_test od -A x -t x1 -j 49216 -N 2 /var/lib/mysql/join_test_db/game_match_player.ibd
+   echo 'game_match_player_idx_match_id'
+   docker exec mysql_test od -A x -t x1 -j 65600 -N 2 /var/lib/mysql/join_test_db/game_match_player.ibd
+   #+end_src
+
+   #+RESULTS:
+   : game_match_primary
+   : 00c040 00 01
+   : 00c042
+   : game_match_player_primary
+   : 00c040 00 01
+   : 00c042
+   : game_match_player_idx_match_id
+   : 010040 00 01
+   : 010042
 
 * 参考资料
 - [[https://emacs.stackexchange.com/questions/48835/help-me-avoid-true-in-org-babel-bash-statements][Help me avoid “|| true” in org babel bash statements]]
+- [[https://www.cnblogs.com/leefreeman/p/8315844.html][InnoDB一棵B+树可以存放多少行数据]]
