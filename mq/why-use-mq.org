@@ -1,0 +1,24 @@
+#+TITLE: 为什么使用消息队列
+
+* 三大特性
+1. 异步
+2. 解耦
+3. 削峰
+
+* 详细特性
+** 异步
+** 解耦
+** 削峰填谷
+** 扩展
+** 持久化
+** 监控
+** 批处理
+** 有序
+** 可达性
+** data flow
+
+* 参考资料
+- [[https://medium.com/@ranjeetvimal/message-queues-10-reasons-to-use-message-queuing-1923277a2e7f][Message Queues — 10 Reasons to Use Message Queuing]]
+- [[https://www.ibm.com/support/knowledgecenter/en/SSFKSJ_7.5.0/com.ibm.mq.pro.doc/q002630_.htm][Main features of message queuing]]
+- [[https://aws.amazon.com/cn/message-queue/benefits][消息队列的优势]]
+- [[https://learnku.com/articles/36282][一个用消息队列 的人，不知道为啥用 MQ，这就有点尴尬]]
