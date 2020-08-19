@@ -64,6 +64,8 @@
 - Spring
   - Spring MVC 流程
   - [[file:spring/boot/springboot.org][Spring Boot 启动流程]]
+  - [[file:spring/beanfactory-or-applicationcontext.org][BeanFactory 与 ApplicationContext 区别]]
+  - [[file:spring/autowired-vs-resource.org][@Autowired vs @Resource]]
  
 - 算法
   - UUID 算法

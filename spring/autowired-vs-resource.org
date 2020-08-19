@@ -1,0 +1,17 @@
+#+TITLE: @Autowired vs @Resource
+
+本文将分析 @Autowired, @Qualifier, @Inject, @Resource 这几个注解的使用
+
+* @Autowired
+Spring 提供的注解。
+
+* 注入匹配顺序
+|------------+-----------------------|
+| @Autowired | Type, Qualifier, Name |
+| @Inject    | Type, QUalifier, Name |
+| @Resource  | Name, Type, QUalifier |
+|------------+-----------------------|
+
+* 参考资料
+- [[http://einverne.github.io/post/2017/08/autowired-vs-resource-vs-inject.html][@Autowired vs @Resource vs @Inject 的区别]]
+- [[https://www.baeldung.com/spring-annotations-resource-inject-autowire][Wiring in Spring: @Autowired, @Resource and @Inject]]
