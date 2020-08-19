@@ -9,8 +9,9 @@ docker run -d --name zookeeper_study zookeeper:3.4.13
 : 73faf86bafc78d697430f9a2cfbd47e9c5366a4afb0845a82d84a79a39fb0cfa
 
 * 查看 Zookeeper 命令
-#+begin_src bash :results output :prologue "exec 2>&1" :epilogue "true"
-docker run --env ZOO_LOG4J_PROP=ERROR,CONSOLE --link zookeeper_study --rm zookeeper:3.4.13 zkCli.sh -server zookeeper_study:2181 help
+#+begin_src bash :results output :prologue "exec 2>&1" :epilogue "true" :exports both
+docker run --env ZOO_LOG4J_PROP=ERROR,CONSOLE --link zookeeper_study --rm zookeeper:3.4.13 zkCli.sh -server zookeeper_study:2181 \
+help
 #+end_src
 
 #+RESULTS:
