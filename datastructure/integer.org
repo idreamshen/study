@@ -27,15 +27,29 @@
 : d == e: false
 
 * 使用 javap 获取字节码分析
-#+begin_src sh :results output :exports both
-javap -l -c IntegerDemo.class
+我们将上述代码简化，只分析变量的定义
+#+begin_src java :classname IntegerDef :cmdline "-cp ."
+  class IntegerDef {
+      public static void main(String[] args) {
+          Integer a = 1;
+          Integer b = 1;
+          Integer c = Integer.valueOf(1);
+          Integer d = new Integer(1);
+      }
+  }
+#+end_src
+
+#+RESULTS:
+
+#+begin_src sh :results output :exports results
+javap -l -c IntegerDef.class
 #+end_src
 
 #+RESULTS:
 #+begin_example
-Compiled from "IntegerDemo.java"
-class IntegerDemo {
-  IntegerDemo();
+Compiled from "IntegerDef.java"
+class IntegerDef {
+  IntegerDef();
     Code:
        0: aload_0
        1: invokespecial #1                  // Method java/lang/Object."<init>":()V
@@ -54,101 +68,18 @@ class IntegerDemo {
       10: iconst_1
       11: invokestatic  #2                  // Method java/lang/Integer.valueOf:(I)Ljava/lang/Integer;
       14: astore_3
-      15: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-      18: new           #4                  // class java/lang/StringBuilder
-      21: dup
-      22: invokespecial #5                  // Method java/lang/StringBuilder."<init>":()V
-      25: ldc           #6                  // String a == b:
-      27: invokevirtual #7                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-      30: aload_1
-      31: aload_2
-      32: if_acmpne     39
-      35: iconst_1
-      36: goto          40
-      39: iconst_0
-      40: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
-      43: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
-      46: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-      49: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-      52: new           #4                  // class java/lang/StringBuilder
-      55: dup
-      56: invokespecial #5                  // Method java/lang/StringBuilder."<init>":()V
-      59: ldc           #11                 // String a.equals(b):
-      61: invokevirtual #7                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-      64: aload_1
-      65: aload_2
-      66: invokevirtual #12                 // Method java/lang/Integer.equals:(Ljava/lang/Object;)Z
-      69: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
-      72: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
-      75: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-      78: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-      81: new           #4                  // class java/lang/StringBuilder
-      84: dup
-      85: invokespecial #5                  // Method java/lang/StringBuilder."<init>":()V
-      88: ldc           #13                 // String a == c:
-      90: invokevirtual #7                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-      93: aload_1
-      94: aload_3
-      95: if_acmpne     102
-      98: iconst_1
-      99: goto          103
-     102: iconst_0
-     103: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
-     106: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
-     109: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-     112: new           #14                 // class java/lang/Integer
-     115: dup
-     116: iconst_1
-     117: invokespecial #15                 // Method java/lang/Integer."<init>":(I)V
-     120: astore        4
-     122: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-     125: new           #4                  // class java/lang/StringBuilder
-     128: dup
-     129: invokespecial #5                  // Method java/lang/StringBuilder."<init>":()V
-     132: ldc           #16                 // String a == d:
-     134: invokevirtual #7                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-     137: aload_1
-     138: aload         4
-     140: if_acmpne     147
-     143: iconst_1
-     144: goto          148
-     147: iconst_0
-     148: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
-     151: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
-     154: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-     157: new           #14                 // class java/lang/Integer
-     160: dup
-     161: iconst_1
-     162: invokespecial #15                 // Method java/lang/Integer."<init>":(I)V
-     165: astore        5
-     167: getstatic     #3                  // Field java/lang/System.out:Ljava/io/PrintStream;
-     170: new           #4                  // class java/lang/StringBuilder
-     173: dup
-     174: invokespecial #5                  // Method java/lang/StringBuilder."<init>":()V
-     177: ldc           #17                 // String d == e:
-     179: invokevirtual #7                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
-     182: aload         4
-     184: aload         5
-     186: if_acmpne     193
-     189: iconst_1
-     190: goto          194
-     193: iconst_0
-     194: invokevirtual #8                  // Method java/lang/StringBuilder.append:(Z)Ljava/lang/StringBuilder;
-     197: invokevirtual #9                  // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
-     200: invokevirtual #10                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
-     203: return
+      15: new           #3                  // class java/lang/Integer
+      18: dup
+      19: iconst_1
+      20: invokespecial #4                  // Method java/lang/Integer."<init>":(I)V
+      23: astore        4
+      25: return
     LineNumberTable:
       line 3: 0
       line 4: 5
       line 5: 10
       line 6: 15
-      line 7: 49
-      line 8: 78
-      line 10: 112
-      line 11: 122
-      line 12: 157
-      line 13: 167
-      line 14: 203
+      line 7: 25
 }
 #+end_example
 
