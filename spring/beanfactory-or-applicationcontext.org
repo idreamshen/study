@@ -2,3 +2,4 @@
 
 * 参考资料
 - [[https://docs.spring.io/spring/docs/4.3.9.RELEASE/spring-framework-reference/html/beans.html#context-introduction-ctx-vs-beanfactory][7.16.1 BeanFactory or ApplicationContext]]
+- [[https://blog.csdn.net/wangbiao007/article/details/53183764][BeanFactory和FactoryBean的区别]]
