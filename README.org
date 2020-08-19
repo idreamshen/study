@@ -13,6 +13,7 @@
   - Mysql 索引 abc 复合索引
   - [[file:mysql/join.org][Mysql Join]]
   - [[file:mysql/index-miss.org][Mysql 索引失效场景]]
+  - [[file:mysql/transaction-lock.org][Mysql 事务及锁]]
 - JVM
   - [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
   - [[file:jvm/jvm-gc.org][JVM GC 算法]]
