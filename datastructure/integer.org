@@ -152,7 +152,7 @@ class IntegerDemo {
 }
 #+end_example
 
-根据上面字节码的解析，我们发现如下三种定义对应的字节码是一样的
+我们先分析变量 a b c
 #+begin_src example
 int a = 1; // line 3
 int b = 1; // line 4
@@ -177,7 +177,7 @@ int c = Integer.valueOf(1); // line 5
 14: astore_3
 #+end_src
 上述显示字节码最终均调用了 =Integer.valueOf= 这个方法。根据 =Integer.valueOf= 源码可知，在 -128 ~ 127 范围内， =Integer.valueOf= 方法返回的均是缓存对象，
-故使用 ==== 进行引用判断时， =a==b= =a==c= 均为 true。
+故使用 ~==~ 进行引用判断时， =a==b= =a==c= 均为 true。
 
 
 * 参考资料
