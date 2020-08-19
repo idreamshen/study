@@ -12,6 +12,7 @@
   - Mysql 数据存储原理
   - Mysql 索引 abc 复合索引
   - [[file:mysql/join.org][Mysql Join]]
+  - [[file:mysql/index-miss.org][Mysql 索引失效场景]]
 - JVM
   - [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
   - [[file:jvm/jvm-gc.org][JVM GC 算法]]
