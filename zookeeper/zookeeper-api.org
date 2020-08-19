@@ -1,0 +1,46 @@
+#+TITLE: Zookeeper CLI 命令介绍
+
+* 准备 Zookeeper Server
+#+begin_src sh
+docker run -d --name zookeeper_study zookeeper:3.4.13
+#+end_src
+
+#+RESULTS:
+: 73faf86bafc78d697430f9a2cfbd47e9c5366a4afb0845a82d84a79a39fb0cfa
+
+* 查看 Zookeeper 命令
+#+begin_src bash :results output :prologue "exec 2>&1" :epilogue "true"
+docker run --env ZOO_LOG4J_PROP=ERROR,CONSOLE --link zookeeper_study --rm zookeeper:3.4.13 zkCli.sh -server zookeeper_study:2181 help
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Connecting to zookeeper_study:2181
+ZooKeeper -server host:port cmd args
+	stat path [watch]
+	set path data [version]
+	ls path [watch]
+	delquota [-n|-b] path
+	ls2 path [watch]
+	setAcl path acl
+	setquota -n|-b val path
+	history 
+	redo cmdno
+	printwatches on|off
+	delete path [version]
+	sync path
+	listquota path
+	rmr path
+	get path [watch]
+	create [-s] [-e] path data acl
+	addauth scheme auth
+	quit 
+	getAcl path
+	close 
+	connect host:port
+#+end_example
+
+* 参考资料
+- [[https://stackoverflow.com/questions/26612908/why-does-zookeeper-not-use-my-log4j-properties-file-log-directory][Why does zookeeper not use my log4j.properties file log directory]]
+- [[http://anlibraly.github.io/zookeeper-%E6%97%A5%E5%BF%97(.out&log4j)%E8%AE%BE%E7%BD%AE%E5%8F%8A%E6%B8%85%E7%90%86/][ZooKeeper日志配置]]
+
