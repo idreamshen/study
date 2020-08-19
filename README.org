@@ -45,7 +45,7 @@
   - Zookeeper 如何防止脑裂
     
 - 消息队列
-  - 为什么需要使用消息中间
+  - [[file:mq/why-use-mq.org][为什么需要使用消息中间]]
   - RocketMQ
   - Kafka
 
