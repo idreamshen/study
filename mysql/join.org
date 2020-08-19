@@ -1,6 +1,6 @@
 * 创建一个 Mysql Server
 #+begin_src sh
-  docker run -d --name mysql_test -v /tmp/mysql-data:/var/lib/mysql -p3306:3306 -eMYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
+  docker run -d --name mysql_test -p3306:3306 -eMYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
 #+end_src
 
 #+RESULTS:
