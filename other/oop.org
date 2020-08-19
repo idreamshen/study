@@ -1,0 +1,17 @@
+#+TITLE: 面向对象程序设计
+
+* 面向对象三大特性
+1. 封装
+2. 继承
+3. 多态
+
+* 面向对象五大原则 SOLID
+1. S 单一功能原则
+2. O 开闭原则
+3. L 里氏替换原则
+4. I 接口隔离原则
+5. D 依赖反转原则
+
+* 参考资料
+- [[https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1][面向对象程序设计]]
+- [[https://zh.wikipedia.org/wiki/SOLID_(%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%AE%BE%E8%AE%A1)][SOLID (面向对象设计)]]

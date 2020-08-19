@@ -1,0 +1,57 @@
+#+TITLE: 为什么 Java String 是不可变的
+
+* 为什么 String 设计成不可变
+不可变的优势
+1. 缓存
+2. 安全
+3. 线程安全
+4. 性能
+
+* 缓存
+* 安全
+
+测试程序
+#+begin_src java :classname StringDemo :cmdline "-cp ." :results output :exports both
+  class StringDemo {
+      public static void main(String[] args) {
+          // 定义一个 abc 的变量 a
+          String a = "abc";
+
+          // 尝试对变量 a 进行修改
+          tryChangeString1(a);
+          // 输出
+          System.out.println(a);
+
+          tryChangeString2(a);
+          // 输出
+          System.out.println(a);
+      }
+
+      static void tryChangeString1(String input) {
+          if (input == null) return;
+          if (input.length() == 0) return;
+
+          // 做字符串截断处理
+          input.substring(0,1);
+      }
+
+      static void tryChangeString2(String input) {
+          input = "123";
+      }
+  }
+#+end_src
+
+输出结果
+#+RESULTS:
+: abc
+: abc
+
+* 线程安全
+因为 String 在被实例化之后就是不可变的，所以在多线程状态下是线程安全的。
+* 性能
+
+* 参考资料
+- [[https://www.baeldung.com/java-string-immutable][Why String is Immutable in Java?]]
+- [[https://javarevisited.blogspot.com/2010/10/why-string-is-immutable-or-final-in-java.html][Why String is Immutable or Final  in Java]]
+- [[https://juejin.im/post/6844903501630275597][String 为什么不可变]]
+- [[https://blog.csdn.net/brave2211/article/details/18319521][Java中的String为什么是不可变的？ -- String源码分析]]

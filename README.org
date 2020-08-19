@@ -26,6 +26,8 @@
   - Java 线程状态
   - [[file:concurrent/threadpool.org][Java 线程池]]
 - JAVA 数据结构
+  - [[file:datastructure/why-string-is-immutable.org][String 为什么不可变]]
+  - Integer
   - Queue
   - HashMap
   - HashTable
@@ -72,4 +74,5 @@
   - JAVA 的四种引用，强弱软虚
   - 八种基本数据类型的大小，以及他们的封装类
   - StringBuffer、StringBuilder 区别
+  - [[file:other/oop.org][面向对象程序设计]]
 
