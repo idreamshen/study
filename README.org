@@ -27,6 +27,7 @@
   - [[file:concurrent/concurrent.org][列举 Java 并发容器]]
   - Java 线程状态
   - [[file:concurrent/threadpool.org][Java 线程池]]
+  - [[file:concurrent/volatile.org][Violate 实现原理]]
 - JAVA 数据结构
   - [[file:datastructure/why-string-is-immutable.org][String 为什么不可变]]
   - [[file:datastructure/integer.org][Integer]]

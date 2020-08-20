@@ -1,0 +1,159 @@
+#+TITLE: Java Volatile
+
+* volatile 字节码
+
+#+begin_src java :classname VolatileDemo :cmdline "-cp ."
+  class VolatileDemo {
+
+      public static void main(String[] args) {
+          Worker w = new Worker();
+          Thread t = new Thread(w);
+          t.start();
+      }
+
+      static class Worker implements Runnable {
+          // 变量 a 使用 volatile 修饰
+          static volatile int a = 1;
+          // 变量 b 未使用 volatile 修饰，作为对照
+          static int b = 2;
+
+          @Override
+          public void run() {
+              a = a + 1;
+              b = b + 2;
+          }
+      }
+  }
+#+end_src
+
+#+RESULTS:
+
+我们看下 Woker 这个类对应的字节码
+#+begin_src sh :results output :output both
+javap -v 'VolatileDemo$Worker.class'
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Classfile /Users/shenxingyu/.emacs.d/org/study/concurrent/VolatileDemo$Worker.class
+  Last modified 2020-8-20; size 468 bytes
+  MD5 checksum eec2ad21923c480dda025e3c1f08a88e
+  Compiled from "VolatileDemo.java"
+class VolatileDemo$Worker implements java.lang.Runnable
+  minor version: 0
+  major version: 52
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Methodref          #5.#18         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #4.#19         // VolatileDemo$Worker.a:I
+   #3 = Fieldref           #4.#20         // VolatileDemo$Worker.b:I
+   #4 = Class              #22            // VolatileDemo$Worker
+   #5 = Class              #25            // java/lang/Object
+   #6 = Class              #26            // java/lang/Runnable
+   #7 = Utf8               a
+   #8 = Utf8               I
+   #9 = Utf8               b
+  #10 = Utf8               <init>
+  #11 = Utf8               ()V
+  #12 = Utf8               Code
+  #13 = Utf8               LineNumberTable
+  #14 = Utf8               run
+  #15 = Utf8               <clinit>
+  #16 = Utf8               SourceFile
+  #17 = Utf8               VolatileDemo.java
+  #18 = NameAndType        #10:#11        // "<init>":()V
+  #19 = NameAndType        #7:#8          // a:I
+  #20 = NameAndType        #9:#8          // b:I
+  #21 = Class              #27            // VolatileDemo
+  #22 = Utf8               VolatileDemo$Worker
+  #23 = Utf8               Worker
+  #24 = Utf8               InnerClasses
+  #25 = Utf8               java/lang/Object
+  #26 = Utf8               java/lang/Runnable
+  #27 = Utf8               VolatileDemo
+{
+  static volatile int a;
+    descriptor: I
+    flags: ACC_STATIC, ACC_VOLATILE
+
+  static int b;
+    descriptor: I
+    flags: ACC_STATIC
+
+  VolatileDemo$Worker();
+    descriptor: ()V
+    flags:
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 9: 0
+
+  public void run();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: getstatic     #2                  // Field a:I
+         3: iconst_1
+         4: iadd
+         5: putstatic     #2                  // Field a:I
+         8: getstatic     #3                  // Field b:I
+        11: iconst_2
+        12: iadd
+        13: putstatic     #3                  // Field b:I
+        16: return
+      LineNumberTable:
+        line 17: 0
+        line 18: 8
+        line 19: 16
+
+  static {};
+    descriptor: ()V
+    flags: ACC_STATIC
+    Code:
+      stack=1, locals=0, args_size=0
+         0: iconst_1
+         1: putstatic     #2                  // Field a:I
+         4: iconst_2
+         5: putstatic     #3                  // Field b:I
+         8: return
+      LineNumberTable:
+        line 11: 0
+        line 13: 4
+}
+SourceFile: "VolatileDemo.java"
+InnerClasses:
+     static #23= #4 of #21; //Worker=class VolatileDemo$Worker of class VolatileDemo
+#+end_example
+
+其中定义变量 a b 的字节码有差异，如下
+#+begin_src example
+static volatile int a;
+    descriptor: I
+    flags: ACC_STATIC, ACC_VOLATILE
+
+static int b;
+    descriptor: I
+    flags: ACC_STATIC
+#+end_src
+变量 a 有一个 ACC_VOLATILE 的 flag，而变量 b 没有这个 flag
+
+而对于变量 a b 的算术运算，则字节码完全一致，如下
+#+begin_src example
+0: getstatic     #2                  // Field a:I
+3: iconst_1
+4: iadd
+5: putstatic     #2                  // Field a:I
+8: getstatic     #3                  // Field b:I
+11: iconst_2
+12: iadd
+13: putstatic     #3                  // Field b:I
+#+end_src
+
+* 参考资料
+- [[https://www.cnblogs.com/dolphin0520/p/3920373.html][Java并发编程：volatile关键字解析]]
+- [[https://www.cnblogs.com/paddix/p/5428507.html][Java 并发编程：volatile的使用及其原理]]
+- [[https://juejin.im/post/6844903520760496141][面试官最爱的volatile关键字]]
