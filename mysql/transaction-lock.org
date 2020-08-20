@@ -7,11 +7,84 @@
 ** Isolation 隔离性
 ** Durability 持久性
 
-* 事务隔离级别
-** READ UNCOMMITTED 读未提交
-** READ COMMITTED 读提交
+* 数据库事务隔离级别
+|----------+--------+------------+--------|
+| 隔离级别 | 脏读   | 不可重复读 | 幻读   |
+|----------+--------+------------+--------|
+| 未提交读 | 可能   | 可能       | 可能   |
+| 已提交读 | 不可能 | 可能       | 可能   |
+| 可重复读 | 不可能 | 不可能     | 可能   |
+| 可串行化 | 不可能 | 不可能     | 不可能 |
+|----------+--------+------------+--------|
+
+#+name: 启动数据库
+#+begin_src sh :exports none
+  docker run -d --name mysql_test -p 3306:3306 -e MYSQL_ALLOW_EMPTY_PASSWORD=true mysql:5.7
+#+end_src
+
+#+RESULTS: 启动数据库
+
+#+name: 创建数据库
+#+begin_src sql :engine mysql :dbhost 127.0.0.1 :dbuser root :exports none
+drop database if exists iso_level_test_db;
+create database if not exists iso_level_test_db;
+show databases;
+#+end_src
+
+#+RESULTS: 创建数据库
+| Database           |
+|--------------------|
+| information_schema |
+| iso_level_test_db  |
+| mysql              |
+| performance_schema |
+| sys                |
+
+#+name: 创建表
+#+begin_src sql :engine mysql :database iso_level_test_db :dbhost 127.0.0.1 :dbuser root :exports none
+  create table if not exists game_match (
+      `id` bigint auto_increment,
+      `name` varchar(64) not null default '',
+      primary key (`id`)
+  ) engine=innodb default charset=utf8 comment '比赛';
+
+  show tables;
+#+end_src
+
+#+RESULTS: 创建表
+| Tables_in_iso_level_test_db |
+|-----------------------------|
+| game_match                  |
+
+#+name: 初始化数据
+#+begin_src sql :engine mysql :database iso_level_test_db :dbhost 127.0.0.1 :dbuser root :exports none
+  truncate table game_match;
+
+  delimiter $
+  drop procedure if exists batch_insert_game_match;
+  create procedure batch_insert_game_match()
+  begin
+      declare i int default 1;
+      while i <= 10 do
+          insert into game_match (id, `name`) values (i, concat("match-", i));
+          set i = i + 1;
+       end while;
+  end $
+
+  call batch_insert_game_match();
+  select count(*) from game_match;
+#+end_src
+
+#+RESULTS: 初始化数据
+| count(*) |
+|----------|
+|       10 |
+
+
+** READ UNCOMMITTED 未提交读
+** READ COMMITTED 已提交读
 ** REPEATABLE READ 可重复读
-** SERIALIZABLE 序列化
+** SERIALIZABLE 可串行化
 
 * 参考资料
 - [[https://en.wikipedia.org/wiki/Isolation_(database_systems)][Isolation (database systems)]]
