@@ -1,2 +1,89 @@
+#+TITLE: JAVA 线程状态
+
+* 状态
+1. NEW 新建状态
+创建后尚未启动的线程处于此状态
+#+begin_src java :classname ThreadNew :cmdline "-cp ."
+  class ThreadNew {
+      public static void main(String[] args) {
+          Thread t = new Thread();
+          System.out.println(t.getState());
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: NEW
+
+2. RUNNABLE 运行中状态
+包括了操作系统线程状态中的 Running 和 Ready。也就是线程可能处于执行状态，也有可能正在等待CPU为之分配执行时间。
+#+begin_src java :classname ThreadRunnable :cmdline "-cp ."
+  class ThreadRunnable {
+      public static void main(String[] args) throws Exception {
+          Thread t = new Thread();
+          t.start();
+          System.out.println(t.getState());
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: RUNNABLE
+
+3. BLOCKED 阻塞状态
+处于此状态的线程不会被分配CPU执行时间，发生的情况：竞争对象监视器锁或者Object#wait()结束后重新竞争对象监视器控制权
+#+begin_src java :classname ThreadBlocked :cmdline "-cp ."
+  class ThreadBlocked {
+      public static void main(String[] args) throws Exception {
+          Worker worker = new Worker();
+          Thread t1 = new Thread(worker);
+          t1.setDaemon(true);
+          t1.start();
+
+          Thread.sleep(50);
+
+          Thread t2 = new Thread(worker);
+          t2.setDaemon(true);
+          t2.start();
+
+          Thread.sleep(50);
+
+          // 
+          System.out.println(t2.getState());
+      }
+
+      static class Worker implements Runnable {
+
+          @Override
+          public void run() {
+              run0();
+          }
+
+          /**
+           ,* 线程同步
+           ,*/
+          synchronized void run0() {
+              try {
+                  Thread.sleep(10000);
+              }
+              catch (Throwable e) {
+                  System.out.println("Error " + e.getMessage());
+                  e.printStackTrace();
+              }
+          }
+
+
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: BLOCKED
+
+
+4. WAITING 无限期等待
+5. TIMED WAITING 有限期等待
+6. TERMINATED 终结状态
+
 * 参考资料
 - [[https://www.throwable.club/2020/08/04/java-concurrency-thread-state/][Java线程生命周期与状态切换]]
