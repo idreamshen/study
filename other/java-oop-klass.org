@@ -7,7 +7,7 @@ wget 'https://repo1.maven.org/maven2/org/openjdk/jol/jol-core/0.10/jol-core-0.10
 
 #+RESULTS: 下载 jol-core
 
-#+begin_src java :classname OopKlassDemo :cmpflag "-cp .:jol-core-0.10.jar" :cmdline "-XX:-UseCompressedOops -cp .:jol-core-0.10.jar" :results output
+#+begin_src java :classname OopKlassDemo :cmpflag "-cp .:jol-core-0.10.jar" :cmdline "-XX:-UseCompressedOops -cp .:jol-core-0.10.jar" :results output :exports both
   import org.openjdk.jol.info.ClassLayout;
 
   class OopKlassDemo {
