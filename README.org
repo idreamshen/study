@@ -68,6 +68,7 @@
   - [[file:spring/boot/springboot.org][Spring Boot 启动流程]]
   - [[file:spring/beanfactory-or-applicationcontext.org][BeanFactory 与 ApplicationContext 区别]]
   - [[file:spring/autowired-vs-resource.org][@Autowired vs @Resource]]
+  - [[file:spring/transation-propagation.org][事务传播类型]]
  
 - 算法
   - UUID 算法
