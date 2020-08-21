@@ -1,0 +1,45 @@
+#+TITLE: Java 对象头
+
+#+name: 下载 jol-core
+#+begin_src sh :exports none
+wget 'https://repo1.maven.org/maven2/org/openjdk/jol/jol-core/0.10/jol-core-0.10.jar'
+#+end_src
+
+#+RESULTS: 下载 jol-core
+
+#+begin_src java :classname OopKlassDemo :cmpflag "-cp .:jol-core-0.10.jar" :cmdline "-XX:-UseCompressedOops -cp .:jol-core-0.10.jar" :results output
+  import org.openjdk.jol.info.ClassLayout;
+
+  class OopKlassDemo {
+      public static void main(String[] args) {
+          A a = new A();
+
+          System.out.println(ClassLayout.parseInstance(a).toPrintable());
+      }
+
+      static class A {
+
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+#+begin_example
+# WARNING: Unable to attach Serviceability Agent. You can try again with escalated privileges. Two options: a) use -Djol.tryWithSudo=true to try with sudo; b) echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+OopKlassDemo$A object internals:
+ OFFSET  SIZE   TYPE DESCRIPTION                               VALUE
+      0     4        (object header)                           01 00 00 00 (00000001 00000000 00000000 00000000) (1)
+      4     4        (object header)                           00 00 00 00 (00000000 00000000 00000000 00000000) (0)
+      8     4        (object header)                           30 78 95 23 (00110000 01111000 10010101 00100011) (596998192)
+     12     4        (object header)                           02 00 00 00 (00000010 00000000 00000000 00000000) (2)
+Instance size: 16 bytes
+Space losses: 0 bytes internal + 0 bytes external = 0 bytes total
+
+#+end_example
+
+* 参考资料
+- [[https://juejin.im/post/6844904035036692487][Java 对象头]]
+- [[https://www.cnblogs.com/LemonFive/p/11246086.html][盘一盘 synchronized （一）—— 从打印Java对象头说起]]
+- [[https://www.reddit.com/r/emacs/comments/9q2nwg/how_to_add_external_jars_in_objava/][How to add external jars in ob-java]]
+- [[https://github.com/emacsmirror/org/blob/master/lisp/ob-java.el][ob-java.el]]

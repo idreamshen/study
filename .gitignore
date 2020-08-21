@@ -1,3 +1,4 @@
 .DS_Store
 *.class
 *.java
+/other/jol-core-0.10.jar
