@@ -85,8 +85,8 @@
   - 分布式 ID 算法
 
 - Leetcode
-  1. [[file:leetcode/1-two-sum.org][Two Sum]]
-  2. [[file:leetcode/2-add-two-numbers.org][Add Two Numbers]]
+  - [[file:leetcode/1-two-sum.org][1. Two Sum]]
+  - [[file:leetcode/2-add-two-numbers.org][2. Add Two Numbers]]
 
 - 架构
   - 如何保证系统稳定性
