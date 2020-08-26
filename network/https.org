@@ -1,0 +1,38 @@
+#+TITLE: HTTPS
+
+TLS 完全握手流程图
+#+begin_example
+  Client                                               Server
+
+  ClientHello                  -------->
+                                                  ServerHello
+                                                 Certificate*
+                                           ServerKeyExchange*
+                                          CertificateRequest*
+                               <--------      ServerHelloDone
+  Certificate*
+  ClientKeyExchange
+  CertificateVerify*
+  [ChangeCipherSpec]
+  Finished                     -------->
+                                           [ChangeCipherSpec]
+                               <--------             Finished
+  Application Data             <------->     Application Data
+#+end_example
+
+TLS 简化握手流程图
+#+begin_example
+  Client                                                Server
+
+  ClientHello                   -------->
+                                                   ServerHello
+                                            [ChangeCipherSpec]
+                                <--------             Finished
+  [ChangeCipherSpec]
+  Finished                      -------->
+  Application Data              <------->     Application Data
+#+end_example
+
+* 参考资料
+- [[https://tools.ietf.org/html/rfc2246][RFC2246: The TLS Protocol Version 1.0]]
+- [[https://github.com/ljianshu/Blog/issues/50][深入理解HTTPS工作原理]]
