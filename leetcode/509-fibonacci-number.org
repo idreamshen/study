@@ -29,3 +29,113 @@ Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.
  
 Note:
 0 ≤ N ≤ 30.
+
+* 普通递归
+#+begin_src java :classname FibonacciNumberRecursion :cmdline "-cp ." :exports both :results output
+  class FibonacciNumberRecursion {
+      public static void main(String[] args) {
+          long startTime = System.currentTimeMillis();
+          for (int i = 40; i < 45; i++) {
+              System.out.println("f(" + i + ")=" + solution(i));
+          }
+          long endTime = System.currentTimeMillis();
+          System.out.println((endTime - startTime) + "ms");
+
+      }
+
+      static long solution(int n) {
+          if (n == 0) return 0;
+          if (n == 1) return 1;
+
+          return solution(n - 1) + solution(n - 2);
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: f(40)=102334155
+: f(41)=165580141
+: f(42)=267914296
+: f(43)=433494437
+: f(44)=701408733
+: 7874ms
+
+* 带备忘录递归
+#+begin_src java :classname FibonacciNumberRecursionWithMemo :cmdline "-cp ." :exports both :results output
+  import java.util.Map;
+  import java.util.HashMap;
+
+  class FibonacciNumberRecursionWithMemo {
+
+      public static void main(String[] args) {
+          long startTime = System.currentTimeMillis();
+          for (int i = 40; i < 45; i++) {
+              System.out.println("f(" + i + ")=" + solution(i));
+          }
+          long endTime = System.currentTimeMillis();
+          System.out.println((endTime - startTime) + "ms");
+
+      }
+
+      static Map<Integer, Long> memStore = new HashMap<>();
+      static long solution(int n) {
+          if (n == 0) return 0;
+          if (n == 1) return 1;
+
+          if (memStore.containsKey(n)) {
+              return memStore.get(n);
+          }
+
+          long result = solution(n - 1) + solution(n - 2);
+          memStore.put(n, result);
+          return result;
+      }
+
+
+
+  }
+#+end_src
+
+#+RESULTS:
+: f(40)=102334155
+: f(41)=165580141
+: f(42)=267914296
+: f(43)=433494437
+: f(44)=701408733
+: 1ms
+
+* 动态规划
+#+begin_src java :classname FibonacciNumberDp :cmdline "-cp ." :exports both :results output
+  class FibonacciNumberDp {
+      public static void main(String[] args) {
+          long startTime = System.currentTimeMillis();
+          for (int i = 40; i < 45; i++) {
+              System.out.println("f(" + i + ")=" + solution(i));
+          }
+          long endTime = System.currentTimeMillis();
+          System.out.println((endTime - startTime) + "ms");
+
+      }
+
+      static long solution(int n) {
+          long[] table = new long[n + 1];
+
+          table[0] = 0;
+          table[1] = 1;
+
+          for (int i = 2; i <= n; i++) {
+              table[i] = table[i - 1] + table[i - 2];
+          }
+
+          return table[n];
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: f(40)=102334155
+: f(41)=165580141
+: f(42)=267914296
+: f(43)=433494437
+: f(44)=701408733
+: 0ms
