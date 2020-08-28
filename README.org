@@ -47,6 +47,7 @@
   - [[file:io/outputstream/outputstream.org][OutputStream]]
 
 - Redis
+  - [[file:redis/memory-policy.org][Redis 内存策略]]
   - Redis Cluster
   - Redis 持久化方式
   - Redis 底层数据结构

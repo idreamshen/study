@@ -1,0 +1,20 @@
+#+TITLE: Redis 内存策略
+
+* maxmemory-policy
+
+- volatile-lru
+  对于有过期时间的 KEY，使用 LRU 算法淘汰
+
+- volatile-ttl
+  对于有过期时间的 KEY，根据其 TTL 进行淘汰
+
+- volatile-random
+  对于有过期时间的 KEY，进行随机淘汰
+- allKeys-lru
+  所有的 Key 都使用 LRU 算法淘汰
+- allkeys-random
+  所有的 Key 都进行随机淘汰
+
+* 参考资料
+- [[http://oldblog.antirez.com/post/redis-as-LRU-cache.html][Redis as an LRU cache]]
+- [[https://stackoverflow.com/questions/5068518/what-does-redis-do-when-it-runs-out-of-memory][What does Redis do when it runs out of memory?]]
