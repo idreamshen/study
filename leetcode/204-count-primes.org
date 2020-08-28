@@ -1,0 +1,125 @@
+Count the number of prime numbers less than a non-negative number, n.
+
+Example:
+#+begin_example
+Input: 10
+Output: 4
+Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+#+end_example
+
+* 解法一
+#+begin_src java :classname CountPrime1 :cmdline "-cp ." :exports both :results output
+  class CountPrime1 {
+
+      public static void main(String[] args) {
+          System.out.println("input=10, output=" + solution(10));
+          System.out.println("input=20, output=" + solution(20));
+      }
+
+      public static int solution(int n) {
+          int count = 0;
+          for (int i = 2; i < n; i++) {
+              if (isPrime(i)) {
+                  count++;
+              }
+          }
+
+          return count;
+      }
+
+      public static boolean isPrime(int num) {
+          for (int i = 2; i < num; i++) {
+              if (num % i == 0) {
+                  return false;
+              }
+          }
+
+          return true;
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+: input=10, output=4
+: input=20, output=8
+
+* 解法二
+#+begin_src java :classname CountPrime2 :cmdline "-cp ." :exports both :results output
+  class CountPrime2 {
+
+      public static void main(String[] args) {
+          System.out.println("input=10, output=" + solution(10));
+          System.out.println("input=20, output=" + solution(20));
+      }
+
+      public static int solution(int n) {
+          int count = 0;
+          for (int i = 2; i < n; i++) {
+              if (isPrime(i)) {
+                  count++;
+              }
+          }
+
+          return count;
+      }
+
+      public static boolean isPrime(int num) {
+          for (int i = 2; i * i <= num; i++) {
+              if (num % i == 0) {
+                  return false;
+              }
+          }
+
+          return true;
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+: input=10, output=4
+: input=20, output=8
+
+* 解法三
+#+begin_src java :classname CountPrime3 :cmdline "-cp ." :exports both :results output
+  import java.util.Arrays;
+
+  class CountPrime3 {
+
+      public static void main(String[] args) {
+          System.out.println("input=10, output=" + solution(10));
+          System.out.println("input=20, output=" + solution(20));
+          System.out.println("input=30, output=" + solution(30));
+      }
+
+      public static int solution(int n) {
+          boolean[] table = new boolean[n + 1];
+          Arrays.fill(table, true);
+          table[0] = false;
+          table[1] = false;
+
+          for (int i = 2; i <= n; i++) {
+              if (table[i] == true) {
+                  for (int j = i; i * j <= n; j++) {
+                      table[i * j] = false;
+                  }
+              }
+          }
+
+          int count = 0;
+          for (int i = 0; i <= n; i++) {
+              if (table[i] == true) {
+                  count++;
+              }
+          }
+
+          return count;
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: input=10, output=4
+: input=20, output=8
+: input=30, output=10
