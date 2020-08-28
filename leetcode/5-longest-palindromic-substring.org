@@ -1,0 +1,18 @@
+Given a string s, find the longest palindromic substring in s. You may assume that the maximum length of s is 1000.
+
+Example 1:
+#+begin_example
+Input: "babad"
+Output: "bab"
+Note: "aba" is also a valid answer.
+#+end_example
+
+Example 2:
+#+begin_example
+Input: "cbbd"
+Output: "bb"
+#+end_example
+
+#+begin_src java :classname LongestPalindromicSubstring :cmdline "-cp ." :exports both :results output
+
+#+end_src

@@ -89,6 +89,7 @@
 - Leetcode
   - [[file:leetcode/1-two-sum.org][1. Two Sum]]
   - [[file:leetcode/2-add-two-numbers.org][2. Add Two Numbers]]
+  - [[file:leetcode/5-longest-palindromic-substring.org][5. Longest Palindromic Substring]]
   - [[file:leetcode/204-count-primes.org][204. Count Primes]]
   - [[file:leetcode/322-coin-change.org][322. Coin Change]]
   - [[file:leetcode/509-fibonacci-number.org][509. Fibonacci Number]]
