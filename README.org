@@ -97,6 +97,7 @@
   - [[file:leetcode/83-remove-duplicates-from-sorted-list.org][83. Remove Duplicates from Sorted List]]
   - [[file:leetcode/92-reverse-linked-list-2.org][92. Reverse Linked List II]]
   - [[file:leetcode/136-single-number.org][136. Single Number]]
+  - [[file:leetcode/147-insertion-sort-list.org][147. Insertion Sort List]]
   - [[file:leetcode/204-count-primes.org][204. Count Primes]]
   - [[file:leetcode/206-reverse-linked-list.org][206. Reverse Linked List]]
   - [[file:leetcode/268-missing-number.org][268. Missing Number]]
