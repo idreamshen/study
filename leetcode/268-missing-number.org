@@ -1,0 +1,36 @@
+Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.
+
+Example 1:
+#+begin_example
+Input: [3,0,1]
+Output: 2
+#+end_example
+
+Example 2:
+#+begin_example
+Input: [9,6,4,2,3,5,7,0,1]
+Output: 8
+#+end_example
+
+#+begin_src java :classname MissingNumber :cmdline "-cp ." :results output :exports both
+  class MissingNumber {
+      public static void main(String[] args) {
+          System.out.println("input = [9,6,4,2,3,5,7,0,1], output = " + solution(new int[] {9,6,4,2,3,5,7,0,1}));
+          System.out.println("input = [3,0,1], output = " + solution(new int[] {3, 0, 1}));
+      }
+
+      static int solution(int[] nums) {
+          int res = nums.length;
+
+          for (int i = 0; i < nums.length; i++) {
+              res = res ^ i ^ nums[i];
+          }
+
+          return res;
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: input = [9,6,4,2,3,5,7,0,1], output = 8
+: input = [3,0,1], output = 2
