@@ -1,0 +1,99 @@
+Reverse a linked list from position m to n. Do it in one-pass.
+
+Note: 1 ≤ m ≤ n ≤ length of list.
+
+Example:
+#+begin_example
+Input: 1->2->3->4->5->NULL, m = 2, n = 4
+Output: 1->4->3->2->5->NULL
+#+end_example
+
+#+begin_src java :classname ReverseLinkedList2 :cmdline "-cp ." :exports both :results output
+  import java.util.List;
+  import java.util.ArrayList;
+
+  class ReverseLinkedList2 {
+      public static void main(String[] args) {
+          ListNode head1 = generate(new int[]{1, 2, 3, 4});
+          print(head1);
+          ListNode reversedHead1 = solution(head1, 2, 3);
+          print(reversedHead1);
+      }
+
+      static ListNode solution(ListNode head, int m, int n) {
+          if (m == 1) {
+              return reverseN(head, n);
+          }
+
+          head.next = solution(head.next, m - 1, n - 1);
+          return head;
+      }
+
+      static ListNode successor = null; // 后驱节点
+
+      /**
+       ,* 反转前 n 个节点，返回新的头节点
+       ,*/
+      static ListNode reverseN(ListNode head, int n) {
+          if (n == 1) {
+              successor = head.next;
+              return head;
+          }
+
+          ListNode last = reverseN(head.next, n - 1);
+          head.next.next = head;
+          head.next = successor;
+          return last;
+      }
+
+      static class ListNode {
+          int val;
+          ListNode next;
+          ListNode(int val, ListNode next) {
+              this.val = val;
+              this.next = next;
+          }
+      }
+
+
+      static ListNode generate(int[] array) {
+          ListNode head = null;
+          ListNode pre = null;
+
+          for (int element : array) {
+              ListNode node = new ListNode(element, null);
+
+              if (head == null) {
+                  head = node;
+              } else {
+                  pre.next = node;
+              }
+
+              pre = node;
+          }
+
+          return head;
+      }
+
+      static void print(ListNode head) {
+          ListNode cur = head;
+
+          List<Integer> res = new ArrayList<>();
+
+          while(cur != null) {
+              res.add(cur.val);
+              cur = cur.next;
+          }
+
+          System.out.println("result is " + res);
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+: result is [1, 2, 3, 4]
+: result is [1, 3, 2, 4]
+
+* 参考资料
+- [[https://labuladong.gitbook.io/algo/shu-ju-jie-gou-xi-lie/di-gui-fan-zhuan-lian-biao-de-yi-bu-fen][递归反转链表的一部分]]
