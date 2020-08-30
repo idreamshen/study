@@ -1,0 +1,93 @@
+Given a sorted linked list, delete all duplicates such that each element appear only once.
+
+Example 1:
+#+begin_example
+Input: 1->1->2
+Output: 1->2
+#+end_example
+
+Example 2:
+#+begin_example
+Input: 1->1->2->3->3
+Output: 1->2->3
+#+end_example
+
+#+begin_src java :classname RemoveDuplicatesFromSortedList :cmdline "-cp ." :results output :exports both
+  import java.util.List;
+  import java.util.ArrayList;
+
+  class RemoveDuplicatesFromSortedList {
+      public static void main(String[] args) {
+          ListNode head = generate(new int[] {1, 1, 2, 3, 3});
+          print(head);
+
+          ListNode resultHead = solution(head);
+          print(resultHead);
+      }
+
+      static ListNode solution(ListNode head) {
+          if (head == null) return null;
+
+          ListNode slow = head;
+          ListNode fast = head.next;
+
+          while (fast != null) {
+              if (slow.val != fast.val) {
+                  slow.next = fast;
+                  slow = fast;
+              }
+
+              fast = fast.next;
+          }
+
+          slow.next = null;
+          return head;
+      }
+
+      static class ListNode {
+          int val;
+          ListNode next;
+          ListNode(int val, ListNode next) {
+              this.val = val;
+              this.next = next;
+          }
+      }
+
+
+      static ListNode generate(int[] array) {
+          ListNode head = null;
+          ListNode pre = null;
+
+          for (int element : array) {
+              ListNode node = new ListNode(element, null);
+
+              if (head == null) {
+                  head = node;
+              } else {
+                  pre.next = node;
+              }
+
+              pre = node;
+          }
+
+          return head;
+      }
+
+      static void print(ListNode head) {
+          ListNode cur = head;
+
+          List<Integer> res = new ArrayList<>();
+
+          while(cur != null) {
+              res.add(cur.val);
+              cur = cur.next;
+          }
+
+          System.out.println("result is " + res);
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: result is [1, 1, 2, 3, 3]
+: result is [1, 2, 3]
