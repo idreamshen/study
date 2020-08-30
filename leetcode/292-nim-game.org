@@ -1,0 +1,29 @@
+You are playing the following Nim Game with your friend: There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones. The one who removes the last stone will be the winner. You will take the first turn to remove the stones.
+
+Both of you are very clever and have optimal strategies for the game. Write a function to determine whether you can win the game given the number of stones in the heap.
+
+Example:
+#+begin_example
+Input: 4
+Output: false 
+Explanation: If there are 4 stones in the heap, then you will never win the game;
+             No matter 1, 2, or 3 stones you remove, the last stone will always be 
+             removed by your friend.
+#+end_example
+
+
+#+begin_src java :classname NimGame :cmdline "-cp ." :exports both :results output
+  class NimGame {
+
+      public static void main(String[] args) {
+      }
+
+      static boolean solution(int n) {
+          return n % 4 !=0;
+      }
+
+  }
+#+end_src
+
+* 参考资料
+- [[https://labuladong.gitbook.io/algo/gao-pin-mian-shi-xi-lie/yi-hang-dai-ma-jie-jue-de-zhi-li-ti][一行代码就能解决的算法题]]

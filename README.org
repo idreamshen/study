@@ -100,6 +100,7 @@
   - [[file:leetcode/204-count-primes.org][204. Count Primes]]
   - [[file:leetcode/206-reverse-linked-list.org][206. Reverse Linked List]]
   - [[file:leetcode/268-missing-number.org][268. Missing Number]]
+  - [[file:leetcode/292-nim-game.org][292. Nim Game]]
   - [[file:leetcode/322-coin-change.org][322. Coin Change]]
   - [[file:leetcode/509-fibonacci-number.org][509. Fibonacci Number]]
 
