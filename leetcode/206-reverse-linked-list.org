@@ -1,0 +1,102 @@
+Reverse a singly linked list.
+
+Example:
+#+begin_example
+Input: 1->2->3->4->5->NULL
+Output: 5->4->3->2->1->NULL
+#+end_example
+
+Follow up:
+
+A linked list can be reversed either iteratively or recursively. Could you implement both?
+
+#+begin_src java :classname ReverseLinkedList :cmdline "-cp ." :results output
+  import java.util.List;
+  import java.util.ArrayList;
+
+  class ReverseLinkedList {
+      public static void main(String[] args) {
+          ListNode head1 = generate(new int[]{1, 2, 3, 4});
+          print(head1);
+          ListNode reversedHead1 = solution(head1);
+          print(reversedHead1);
+      }
+
+      /**
+       ,* NULL ->     1    -> 2 -> 3 -> NULL
+       ,* pre     cur/next
+       ,*
+       ,* NULL <- 1 -> 2 -> 3 -> NULL
+       ,* pre    cur  nxt
+       ,*
+       ,* NULL <- 1 <- 2 -> 3 -> NULL
+       ,*        pre  cur  nxt
+       ,*/
+      // 1 -> 2 -> 3
+      // 1 <- 2 -> 3
+      // 1 <- 2 <- 3
+
+      static ListNode solution(ListNode head) {
+
+          ListNode pre = null;
+          ListNode cur = head;
+          ListNode nxt = head;
+
+          while (cur != null) {
+              nxt = cur.next;
+
+              cur.next = pre;
+
+              pre = cur;
+              cur = nxt;
+          }
+
+          return pre;
+      }
+
+      static class ListNode {
+          int val;
+          ListNode next;
+          ListNode(int val, ListNode next) {
+              this.val = val;
+              this.next = next;
+          }
+      }
+
+      static ListNode generate(int[] array) {
+          ListNode head = null;
+          ListNode pre = null;
+
+          for (int element : array) {
+              ListNode node = new ListNode(element, null);
+
+              if (head == null) {
+                  head = node;
+              } else {
+                  pre.next = node;
+              }
+
+              pre = node;
+          }
+
+          return head;
+      }
+
+      static void print(ListNode head) {
+          ListNode cur = head;
+
+          List<Integer> res = new ArrayList<>();
+
+          while(cur != null) {
+              res.add(cur.val);
+              cur = cur.next;
+          }
+
+          System.out.println("result is " + res);
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: result is [1, 2, 3, 4]
+: result is [4, 3, 2, 1]
