@@ -10,7 +10,7 @@ Follow up:
 
 A linked list can be reversed either iteratively or recursively. Could you implement both?
 
-#+begin_src java :classname ReverseLinkedList :cmdline "-cp ." :results output
+#+begin_src java :classname ReverseLinkedList :cmdline "-cp ." :results output :exports both
   import java.util.List;
   import java.util.ArrayList;
 
