@@ -119,6 +119,7 @@
   - [[https://www.cnblogs.com/look-look/p/11715439.html][2019 阿里java面试笔试总结]]
   - [[https://www.imooc.com/article/288455][阿里、拼多多面试经历分享，面试岗位：java技术专家]]
   - [[https://www.jianshu.com/p/6789830f6e0a][面试阿里JavaP7岗本以为凉凉：4轮技术面终拿下offer]]
+  - [[https://github.com/yuanguangxin/LeetCode/blob/master/Rocket.md][面试问题整理]]
 
 - 算法总结
   - [[https://labuladong.gitbook.io/algo/][labuladong的算法小抄]]
