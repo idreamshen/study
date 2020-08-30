@@ -107,6 +107,7 @@
   - [[file:leetcode/344-reverse-string.org][344. Reverse String]]
   - [[file:leetcode/509-fibonacci-number.org][509. Fibonacci Number]]
   - [[file:leetcode/796-rotate-string.org][796. Rotate String]]
+  - [[file:leetcode/875-koko-eating-bananas.org][875. Koko Eating Bananas]]
   - [[file:leetcode/877-stone-game.org][877. Stone Game]]
 
 - 架构
