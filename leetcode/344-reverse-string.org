@@ -1,0 +1,49 @@
+Write a function that reverses a string. The input string is given as an array of characters char[].
+
+Do not allocate extra space for another array, you must do this by modifying the input array in-place with O(1) extra memory.
+
+You may assume all the characters consist of printable ascii characters.
+
+ 
+
+Example 1:
+#+begin_example
+Input: ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+#+end_example
+
+Example 2:
+#+begin_example
+Input: ["H","a","n","n","a","h"]
+Output: ["h","a","n","n","a","H"]
+#+end_example
+
+#+begin_src java :classname ReverseString :cmdline "-cp ." :results output :exports both
+  class ReverseString {
+      public static void main(String[] args) {
+          System.out.println("input = abc, output = " + new String(solution(new char[] {'a', 'b', 'c'})));
+          System.out.println("input = Hannah, output = " + new String(solution(new char[] {'H', 'a', 'n', 'n', 'a', 'h'})));
+      }
+
+      static char[] solution(char[] s) {
+          int left = 0;
+          int right = s.length - 1;
+
+          while (left < right) {
+              char tmp = s[left];
+
+              s[left] = s[right];
+              s[right] = tmp;
+
+              left++;
+              right--;
+          }
+
+          return s;
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: input = abc, output = cba
+: input = Hannah, output = hannaH
