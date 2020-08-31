@@ -1,0 +1,93 @@
+Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+
+An input string is valid if:
+
+1. Open brackets must be closed by the same type of brackets.
+2. Open brackets must be closed in the correct order.
+
+Example 1:
+#+begin_example
+Input: s = "()"
+Output: true
+#+end_example
+
+Example 2:
+#+begin_example
+Input: s = "()[]{}"
+Output: true
+#+end_example
+
+Example 3:
+#+begin_example
+Input: s = "(]"
+Output: false
+#+end_example
+
+Example 4:
+#+begin_example
+Input: s = "([)]"
+Output: false
+#+end_example
+
+Example 5:
+#+begin_example
+Input: s = "{[]}"
+Output: true
+#+end_example
+ 
+Constraints:
+
+- 1 <= s.length <= 104
+- s consists of parentheses only '()[]{}'.
+
+#+begin_src java :classname ValidParentheses :cmdline "-cp ." :results output :exports both
+  import java.util.Stack;
+
+  class ValidParentheses {
+      public static void main(String[] args) {
+          System.out.println("Input: s = (). Output: " + solution("()"));
+          System.out.println("Input: s = ()[]{}. Output: " + solution("()[]{}"));
+          System.out.println("Input: s = ([)]. Output: " + solution("([)]"));
+          System.out.println("Input: s = {[]}. Output: " + solution("{[]}"));
+      }
+
+      static boolean solution(String s) {
+          Stack<Character> stack = new Stack<>();
+
+          char[] chars = s.toCharArray();
+
+          for (char c : chars) {
+              if (isLeft(c)) {
+                  stack.push(c);
+              } else {
+                  if (stack.isEmpty()) {
+                      return false;
+                  }
+
+                  char poppedChar = stack.pop();
+                  if (poppedChar != leftOf(c)) {
+                      return false;
+                  }
+              }
+          }
+
+          return stack.isEmpty();
+      }
+
+      static boolean isLeft(char c) {
+          return "({[".indexOf(c) > -1;
+      }
+
+      static char leftOf(char right) {
+          if (right == ')') return '(';
+          if (right == ']') return '[';
+          return '{';
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: Input: s = (). Output: true
+: Input: s = ()[]{}. Output: true
+: Input: s = ([)]. Output: false
+: Input: s = {[]}. Output: true
