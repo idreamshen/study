@@ -91,6 +91,7 @@
   - [[file:leetcode/1-two-sum.org][1. Two Sum]]
   - [[file:leetcode/2-add-two-numbers.org][2. Add Two Numbers]]
   - [[file:leetcode/5-longest-palindromic-substring.org][5. Longest Palindromic Substring]]
+  - [[file:leetcode/15-three-sum.org][15. Three Sum]]
   - [[file:leetcode/20-valid-parentheses.org][20. Valid Parentheses]]
   - [[file:leetcode/26-remove-duplicates-from-sorted-array.org][26. Remove Duplicates from Sorted Array]]
   - [[file:leetcode/55-jump-game.org][55. Jump Game]]
