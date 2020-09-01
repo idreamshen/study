@@ -20,6 +20,7 @@
   - [[file:mysql/transaction-lock.org][Mysql 事务及锁]]
 
 - JVM
+  - [[file:jvm/jvm-component.org][JVM 组成]]
   - [[file:jvm/jvm-memory-structure.org][JVM 内存结构]]
   - [[file:jvm/jvm-gc.org][JVM GC 算法]]
   - Java 类加载过程
@@ -45,6 +46,9 @@
 
 - JAVA IO
   - [[file:io/outputstream/outputstream.org][OutputStream]]
+  - BIO
+  - NIO
+  - AIO
 
 - Redis
   - [[file:redis/memory-policy.org][Redis 内存策略]]

@@ -1,0 +1,18 @@
+#+begin_src java :classname BioDemo :cmdline "-cp ." :results output :exports both
+  import java.io.FileOutputStream;
+  import java.io.ObjectOutputStream;
+  import java.io.FileWriter;
+
+  class BioDemo {
+      public static void main(String[] args) throws Exception {
+
+          FileWriter stream = new FileWriter("/tmp/bio-demo.txt");
+
+          stream.append("hello a");
+          stream.flush();
+
+      }
+  }
+#+end_src
+
+#+RESULTS:

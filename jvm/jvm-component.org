@@ -1,0 +1,9 @@
+#+TITLE: JVM 组成
+
+- ClassLoader 类加载器
+- Runtime Data Area 运行时数据区
+- Execution Engine 执行引擎
+- Native Interface 本地库接口
+
+* 参考资料
+- [[https://jverson.com/thinking-in-java/jvm/jvm-components.html][JVM 组成]]
