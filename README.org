@@ -142,6 +142,7 @@
   - [[https://github.com/yuanguangxin/LeetCode/blob/master/Rocket.md][面试问题整理]]
   - [[https://github.com/aikuyun/IT-Interview-experience][2020届秋招面经分类汇总]]
   - [[https://my.oschina.net/u/4511602/blog/3275336][字节跳动面试汇总]]
+  - [[https://blog.csdn.net/weixin_45600362/article/details/101016543][字节跳动Java研发面试总结：2个星期，4轮面试]]
 
 - 算法总结
   - [[https://labuladong.gitbook.io/algo/][labuladong的算法小抄]]
