@@ -1,0 +1,44 @@
+#+TITLE: 进程状态
+
+#+begin_example
+PROCESS STATE CODES         top
+       Here are the different values that the s, stat and state output
+       specifiers (header "STAT" or "S") will display to describe the state
+       of a process:
+
+               D    uninterruptible sleep (usually IO)
+               I    Idle kernel thread
+               R    running or runnable (on run queue)
+               S    interruptible sleep (waiting for an event to complete)
+               T    stopped by job control signal
+               t    stopped by debugger during the tracing
+               W    paging (not valid since the 2.6.xx kernel)
+               X    dead (should never be seen)
+               Z    defunct ("zombie") process, terminated but not reaped by
+                    its parent
+
+       For BSD formats and when the stat keyword is used, additional
+       characters may be displayed:
+
+               <    high-priority (not nice to other users)
+               N    low-priority (nice to other users)
+               L    has pages locked into memory (for real-time and custom
+                    IO)
+               s    is a session leader
+               l    is multi-threaded (using CLONE_THREAD, like NPTL
+                    pthreads do)
+               +    is in the foreground process group
+#+end_example
+
+- D 不可中断的睡眠状态（通常由 IO 操作产生）
+- S 可中断睡眠状态（等待一个事件完成）
+- I 空闲内核线程
+- R 运行或可运行状态（在运行队列中）
+- T 暂停状态
+- t 跟踪状态
+- Z 僵尸状态
+- X 推出状态
+
+* 参考资料
+- [[https://www.man7.org/linux/man-pages/man1/ps.1.html#PROCESS_STATE_CODES][ps(1) — Linux manual page]]
+- [[https://blog.csdn.net/shenwansangz/article/details/51981459][Linux进程状态解析 之 R、S、D、T、Z、X (主要有三个状态)]]

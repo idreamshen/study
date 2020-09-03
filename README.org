@@ -5,8 +5,8 @@
   - 进程的通信方式
   - 进程栈大小
   - 进程与线程区别
-  - 进程的状态
-  - 线程的状态
+  - [[file:os/process-state.org][进程状态]]
+  - 线程状态
 
 - 网络
   - [[file:network/tcp/handshake.org][TCP 三次握手]]
