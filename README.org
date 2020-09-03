@@ -1,6 +1,12 @@
 * 目录
 - 操作系统
-  - 虚拟内存
+  - 虚拟内存与物理内存转化
+  - CPU 调度方式
+  - 进程的通信方式
+  - 进程栈大小
+  - 进程与线程区别
+  - 进程的状态
+  - 线程的状态
 
 - 网络
   - [[file:network/tcp/handshake.org][TCP 三次握手]]
@@ -9,7 +15,14 @@
   - [[file:network/tcp/slidingwindow.org][TCP 滑动窗口]]
   - [[file:network/websocket/websocket.org][WEBSOCKET 协议]]
   - [[file:network/https.org][HTTPS 协议]]
-
+  - SYN Flood 如何避免
+  - HTTP 头部字段
+  - HTTP 请求方式
+  - BIO
+  - NIO
+  - AIO
+  - OSI 七层模型
+  - ARP 协议
 
 - Mysql
   - [[file:mysql/b-tree-index.org][Mysql 索引 B+ 树]]
@@ -18,6 +31,8 @@
   - [[file:mysql/join.org][Mysql Join]]
   - [[file:mysql/index-miss.org][Mysql 索引失效场景]]
   - [[file:mysql/transaction-lock.org][Mysql 事务及锁]]
+  - 数据库隔离级别
+  - InnoDB 与 MySAIM 区别
 
 - JVM
   - [[file:jvm/jvm-component.org][JVM 组成]]
@@ -25,9 +40,16 @@
   - [[file:jvm/jvm-gc.org][JVM GC 算法]]
   - Java 类加载过程
   - Java 类加载机制
+  - 新生代频繁 gc 如何调整
+  - CMS 垃圾回收器
 
-- JAVA 锁
+- 锁
   - Lock 与 Sychronized 区别
+  - Redis 分布式锁
+  - Zookeeper 分布式锁
+  - 死锁产生原因
+  - 如何解决死锁
+  - 数据库死锁例子
 
 - JAVA 并发
   - AQS 源码
@@ -45,19 +67,19 @@
   - Queue
   - HashMap
   - HashTable
-
+  - ConcurrentHashMap
 
 - JAVA IO
   - [[file:io/outputstream/outputstream.org][OutputStream]]
-  - BIO
-  - NIO
-  - AIO
 
 - Redis
   - [[file:redis/memory-policy.org][Redis 内存策略]]
   - Redis Cluster
   - Redis 持久化方式
   - Redis 底层数据结构
+  - Redis 热 Key 如何解决
+  - Redis 减库存怎么设计
+  - Redis 渐进式 Hash
 
 - Zookeeper
   - [[file:zookeeper/zookeeper-api.org][Zookeeper Cli API]]
@@ -73,10 +95,7 @@
   - 2PC
   - 3PC
   - TCC
-- 分布式锁
-  - Redis 分布式锁
-  - Zookeeper 分布式锁
-  
+
 - 设计模式
   - [[file:design/pattern/singleton/singleton.org][单例模式]]
   - 责任链模式
@@ -134,6 +153,7 @@
   - [[file:other/java-oop-klass.org][Java 对象头]]
   - Java 反射及注解
   - [[https://github.com/hollischuang/toBeTopJavaer][Java工程师成神之路]]
+  - JAVA 深浅拷贝
 
 - 面试总结
   - [[https://www.cnblogs.com/look-look/p/11715439.html][2019 阿里java面试笔试总结]]
