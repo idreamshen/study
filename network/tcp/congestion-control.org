@@ -1,0 +1,48 @@
+#+TITLE: TCP 拥塞控制（TCP Congestion Control）
+
+* 目的
+拥塞控制的目的是避免发送方的数据填满整个网络
+
+* 算法
+1. 慢启动
+2. 拥塞避免
+3. 拥塞发生
+4. 快速恢复
+
+* 慢启动算法
+每当收到一个 ACK，拥塞窗口 cwnd 就加 1。呈指数增加，直到越过慢启动门限状态变量。
+
+慢启动门限状态变量 ssthresh (slow start threshold)
+
+- 当 ~cwnd < ssthresh~ 时，使用慢启动算法
+- 当 ~cwnd >= ssthresh~ 时，使用拥塞避免算法
+
+* 拥塞避免算法
+每当收到一个 ACK，拥塞窗口 cwnd 增加 1/cwnd。呈线性增长。
+
+当触发丢包重传机制后，就进入拥塞发生算法
+
+* 拥塞发生算法
+重传机制有两种
+- 超时重传
+- 快速重传
+
+超时重传时：
+- ssthresh 设为 cwnd/2
+- cwnd 重制为 1
+
+快速重传时：
+- ~cwnd = cwnd / 2~ 即缩小一半
+- sshresh = cwnd
+- 进入快速恢复算法
+
+* 快速恢复算法
+- 拥塞窗口 ~cwnd = ssthresh + 3~
+- 重传丢失的数据包
+- 如果再收到重复的 ACK，那么 cwnd 增加 1
+- 如果收到新数据的 ACK，就把 cwnd 设置为第一步中的 ssthresh 
+
+
+* 参考资料
+- [[https://labuladong.gitbook.io/algo/labuladong-he-ta-de-peng-you-men/30-zhang-tu-jie-tcp-zhong-chuan-hua-dong-chuang-kou-liu-liang-kong-zhi-yong-sai-kong-zhi-fa-chou][30张图解：TCP重传、滑动窗口、流量控制、拥塞控制]]
+- [[https://coolshell.cn/articles/11609.html#%E5%BF%AB%E9%80%9F%E6%81%A2%E5%A4%8D%E7%AE%97%E6%B3%95_%E2%80%93_Fast_Recovery][TCP 的那些事儿（下）]]

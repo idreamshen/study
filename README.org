@@ -11,7 +11,7 @@
 - 网络
   - [[file:network/tcp/handshake.org][TCP 三次握手]]
   - TCP 四次挥手
-  - TCP 拥塞控制
+  - [[file:network/tcp/congestion-control.org][TCP 拥塞控制]]
   - [[file:network/tcp/slidingwindow.org][TCP 滑动窗口]]
   - [[file:network/websocket/websocket.org][WEBSOCKET 协议]]
   - [[file:network/https.org][HTTPS 协议]]
