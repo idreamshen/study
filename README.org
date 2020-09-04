@@ -33,6 +33,7 @@
   - [[file:mysql/transaction-lock.org][Mysql 事务及锁]]
   - 数据库隔离级别
   - InnoDB 与 MySAIM 区别
+  - [[file:mysql/why-not-use-uuid-in-primary-key.org][为什么不能用 UUID 做主键]]
 
 - JVM
   - [[file:jvm/jvm-component.org][JVM 组成]]

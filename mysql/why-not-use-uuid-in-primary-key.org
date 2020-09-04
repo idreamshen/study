@@ -1,0 +1,2 @@
+* 参考资料
+- [[https://www.cnblogs.com/wyq178/p/12548864.html][深入分析mysql为什么不推荐使用uuid或者雪花id作为主键]]
