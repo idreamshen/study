@@ -1,0 +1,123 @@
+#+TITLE: BIO
+
+#+begin_src java :classname BioDemo :cmdline "-cp ." :exports both :results output
+  import java.lang.Thread;
+  import java.net.ServerSocket;
+  import java.net.Socket;
+  import java.io.BufferedReader;
+  import java.io.BufferedWriter;
+  import java.io.InputStreamReader;
+  import java.io.OutputStreamWriter;
+
+  class BioDemo {
+      static final int PORT = 8862;
+
+      public static void main(String[] args) throws Exception {
+
+          BioServer server = new BioServer();
+          BioClient client = new BioClient();
+
+          server.start();
+          Thread.sleep(500);
+          client.start();
+
+          Thread.sleep(3000);
+          server.stopServer();
+          client.stopClient();
+      }
+
+      static class BioServer extends Thread {
+          ServerSocket serverSocket;
+
+          public BioServer() throws Exception {
+              serverSocket = new ServerSocket(PORT);
+              System.out.println("{Server} Server run");
+          }
+
+          public void stopServer() throws Exception {
+              this.interrupt();
+              serverSocket.close();
+          }
+
+          public void run() {
+              while (!this.isInterrupted()) {
+                  try {
+                      System.out.println("{Server} Waiting for new client...");
+
+                      Socket socket = serverSocket.accept();
+                      System.out.println("[Server] Accept new socket: " + socket.getRemoteSocketAddress());
+
+                      BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+                      String msg = null;
+
+                      while (!this.isInterrupted() && (msg = reader.readLine()) == null) {
+                          Thread.sleep(100);
+                      }
+
+                      System.out.println("{Server} Received: " + msg);
+
+                      BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                      writer.append("I know you are client, " + msg);
+                      writer.newLine();
+                      writer.flush();
+                      System.out.println("{Server} Sent ack");
+
+                      socket.close();
+                  } catch (Exception e) {
+                      e.printStackTrace();
+                      break;
+                  }
+              }
+          }
+      }
+
+      static class BioClient extends Thread {
+
+          Socket client;
+
+          public BioClient() throws Exception {
+              client = new Socket("127.0.0.1", PORT);
+              System.out.println("{Client} Connected to server");
+          }
+
+          public void stopClient() throws Exception {
+              client.close();
+          }
+
+          public void run() {
+              try {
+                  BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(client.getOutputStream()));
+                  writer.append("I am client");
+                  writer.newLine();
+                  writer.flush();
+                  System.out.println("{Client} Client sent to server");
+
+                  BufferedReader reader = new BufferedReader(new InputStreamReader(client.getInputStream()));
+
+                  String msg = null;
+
+                  while (!this.isInterrupted() && (msg = reader.readLine()) == null) {
+                      Thread.sleep(100);
+                  }
+
+                  System.out.println("{Client} Received: " + msg);
+
+              } catch (Exception e) {
+                  e.printStackTrace();
+              }
+          }
+      }
+  }
+#+end_src
+
+#+RESULTS:
+: {Server} Server run
+: {Client} Connected to server
+: {Server} Waiting for new client...
+: [Server] Accept new socket: /127.0.0.1:57577
+: {Client} Client sent to server
+: {Server} Received: I am client
+: {Server} Sent ack
+: {Client} Received: I know you are client, I am client
+: {Server} Waiting for new client...

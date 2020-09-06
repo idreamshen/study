@@ -18,7 +18,7 @@
   - SYN Flood 如何避免
   - HTTP 头部字段
   - HTTP 请求方式
-  - BIO
+  - [[file:network/bio.org][BIO]]
   - NIO
   - AIO
   - OSI 七层模型
