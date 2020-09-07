@@ -147,6 +147,67 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
 : 1
 : 2
 
+* SocketChannel
+  #+begin_src java :classname SocketChannelDemo :cmdline "-cp ." :exports both :results output
+    import java.nio.channels.SocketChannel;
+    import java.nio.ByteBuffer;
+    import java.net.InetSocketAddress;
+
+    class SocketChannelDemo {
+        public static void main(String[] args) throws Exception {
+
+            SocketChannel channel = SocketChannel.open();
+            channel.connect(new InetSocketAddress("jenkov.com", 80));
+            System.out.println("connect");
+
+            ByteBuffer buffer = ByteBuffer.wrap("GET /\n".getBytes());
+
+            while (buffer.hasRemaining()) {
+                channel.write(buffer);
+            }
+
+            System.out.println("Write 'GET /'");
+
+            buffer.clear();
+
+            System.out.println("Reading data from response");
+            System.out.println();
+
+            int bytesRead = channel.read(buffer);
+
+            while (bytesRead != -1) {
+                buffer.flip();
+
+                while(buffer.hasRemaining()) {
+                    System.out.print((char)buffer.get());
+                }
+
+                buffer.clear();
+                bytesRead = channel.read(buffer);
+            }
+
+            System.out.println("End read");
+
+            channel.close();
+
+        }
+    }
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  connect
+  Write 'GET /'
+  Reading data from response
+
+  HTTP/1.1 400 HTTP/0.9 not supported
+  Content-Length: 0
+  Connection: close
+  Server: Jetty(9.3.1.v20150714)
+  
+  End read
+  #+end_example
+
 * 参考资料
 - [[https://wiki.jikexueyuan.com/project/java-nio-zh/java-nio-buffer.html][04. Java NIO Buffer缓冲区]]
 - [[https://stackoverflow.com/questions/19831893/not-able-to-read-file-using-java-nio-channels-filechannel][Not able to read file using java.nio.channels.FileChannel]]
