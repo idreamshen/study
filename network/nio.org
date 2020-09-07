@@ -208,6 +208,121 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
   End read
   #+end_example
 
+* ServerSocketChannel
+  #+begin_src java :classname ServerSocketChannelDemo :cmdline "-cp ." :results output :exports both
+    import java.nio.ByteBuffer;
+    import java.nio.channels.SocketChannel;
+    import java.nio.channels.Selector;
+    import java.nio.channels.SelectionKey;
+    import java.nio.channels.ServerSocketChannel;
+    import java.net.InetSocketAddress;
+    import java.util.Set;
+    import java.util.Iterator;
+
+    class ServerSocketChannelDemo {
+        static int PORT = 8879;
+
+        public static void main(String[] args) throws Exception {
+            Server server = new Server();
+            server.start();
+
+            Thread.sleep(20000);
+            server.stopServer();
+        }
+
+        static class Server extends Thread {
+
+            ServerSocketChannel serverSocketChannel;
+            Selector selector;
+
+            public Server() throws Exception {
+                serverSocketChannel = ServerSocketChannel.open();
+                serverSocketChannel.socket().bind(new InetSocketAddress(PORT));
+                serverSocketChannel.configureBlocking(false);
+
+                selector = Selector.open();
+
+                SelectionKey key = serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
+            }
+
+            public void stopServer() throws Exception {
+                this.interrupt();
+                this.serverSocketChannel.close();
+            }
+
+            public void run() {
+
+                while (!this.isInterrupted()) {
+
+                    try {
+
+                        // 等待 10 秒
+                        int readyChannels = selector.select(10000);
+
+                        if (readyChannels == 0) continue;
+
+                        Set<SelectionKey> keys = selector.selectedKeys();
+
+                        Iterator<SelectionKey> iterator = keys.iterator();
+
+                        while (iterator.hasNext()) {
+
+                            SelectionKey key = iterator.next();
+                            iterator.remove();
+
+                            if (key.isAcceptable()) {
+                                SocketChannel socketChannel = serverSocketChannel.accept();
+                                socketChannel.configureBlocking(false);
+                                socketChannel.register(selector, SelectionKey.OP_READ);
+                                System.out.println("Accept a socket");
+                            } else if (key.isReadable()) {
+                                SocketChannel socketChannel = (SocketChannel) key.channel();
+                                ByteBuffer buffer = ByteBuffer.allocate(128);
+                                socketChannel.read(buffer);
+                                key.interestOps(SelectionKey.OP_WRITE);
+                                System.out.println("Read data from client");
+                            } else if (key.isWritable()) {
+                                SocketChannel socketChannel = (SocketChannel) key.channel();
+                                ByteBuffer buffer = ByteBuffer.wrap("Hello from server".getBytes());
+                                socketChannel.write(buffer);
+                                key.interestOps(SelectionKey.OP_READ);
+                                System.out.println("Write data to client");
+                            }
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        break;
+                    }
+
+                }
+            }
+
+        }
+
+    }
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  Accept a socket
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  Read data from client
+  Write data to client
+  #+end_example
+
+
 * 参考资料
 - [[https://wiki.jikexueyuan.com/project/java-nio-zh/java-nio-buffer.html][04. Java NIO Buffer缓冲区]]
 - [[https://stackoverflow.com/questions/19831893/not-able-to-read-file-using-java-nio-channels-filechannel][Not able to read file using java.nio.channels.FileChannel]]
