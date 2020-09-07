@@ -1,0 +1,67 @@
+#+TITLE: NIO
+
+* Buffer
+#+begin_src java :classname NioBuffer :cmdline "-cp ." :exports both :results output
+  import java.nio.ByteBuffer;
+  import java.nio.Buffer;
+
+  class NioBuffer {
+      public static void main(String[] args) {
+
+          ByteBuffer buf = ByteBuffer.allocate(10);
+          System.out.println("Allocate 10 size buffer. " + dumpBuf(buf));
+
+          buf.put((byte)1);
+          buf.put((byte)2);
+          buf.put((byte)3);
+          buf.put((byte)4);
+          System.out.println("Put 1,2,3,4 into buffer. " + dumpBuf(buf));
+
+          buf.flip();
+          System.out.println("Buffer flip. " + dumpBuf(buf));
+
+          readBuf(buf);
+
+          buf.rewind();
+
+          System.out.println("Buffer rewind. " + dumpBuf(buf));
+
+          readBuf(buf);
+
+          buf.clear();
+          System.out.println("Buffer clear. " + dumpBuf(buf));
+
+      }
+
+      static String dumpBuf(Buffer buf) {
+          return "Position = " + buf.position() + ", limit = " + buf.limit() + ", capacity = " + buf.capacity();
+      }
+
+      static void readBuf(ByteBuffer buf) {
+          System.out.println("Read buffer");
+
+          while(buf.hasRemaining()) {
+              System.out.println("Read: " + buf.get() + ". " + dumpBuf(buf));
+          }
+      }
+  }
+#+end_src
+
+#+RESULTS:
+#+begin_example
+Allocate 10 size buffer. Position = 0, limit = 10, capacity = 10
+Put 1,2,3,4 into buffer. Position = 4, limit = 10, capacity = 10
+Buffer flip. Position = 0, limit = 4, capacity = 10
+Read buffer
+Read: 1. Position = 1, limit = 4, capacity = 10
+Read: 2. Position = 2, limit = 4, capacity = 10
+Read: 3. Position = 3, limit = 4, capacity = 10
+Read: 4. Position = 4, limit = 4, capacity = 10
+Buffer rewind. Position = 0, limit = 4, capacity = 10
+Read buffer
+Read: 1. Position = 1, limit = 4, capacity = 10
+Read: 2. Position = 2, limit = 4, capacity = 10
+Read: 3. Position = 3, limit = 4, capacity = 10
+Read: 4. Position = 4, limit = 4, capacity = 10
+Buffer clear. Position = 0, limit = 10, capacity = 10
+#+end_example

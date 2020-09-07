@@ -19,7 +19,7 @@
   - HTTP 头部字段
   - HTTP 请求方式
   - [[file:network/bio.org][BIO]]
-  - NIO
+  - [[file:network/nio.org][NIO]]
   - AIO
   - OSI 七层模型
   - ARP 协议
