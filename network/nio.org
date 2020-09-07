@@ -8,26 +8,33 @@
   class NioBuffer {
       public static void main(String[] args) {
 
+          // 创建一个 10 字节的 buffer
           ByteBuffer buf = ByteBuffer.allocate(10);
           System.out.println("Allocate 10 size buffer. " + dumpBuf(buf));
 
+          // 将 1 2 3 4 写入 buffer 中
           buf.put((byte)1);
           buf.put((byte)2);
           buf.put((byte)3);
           buf.put((byte)4);
           System.out.println("Put 1,2,3,4 into buffer. " + dumpBuf(buf));
 
+          // 翻转 buffer，将其从写模式转换为读模式
           buf.flip();
           System.out.println("Buffer flip. " + dumpBuf(buf));
 
+          // 读取并打印 buffer
           readBuf(buf);
 
+          // 倒带，实现重复读取之前的数据
           buf.rewind();
 
           System.out.println("Buffer rewind. " + dumpBuf(buf));
 
+          // 读取并打印数据
           readBuf(buf);
 
+          // 清空 buffer
           buf.clear();
           System.out.println("Buffer clear. " + dumpBuf(buf));
 
@@ -65,3 +72,6 @@ Read: 3. Position = 3, limit = 4, capacity = 10
 Read: 4. Position = 4, limit = 4, capacity = 10
 Buffer clear. Position = 0, limit = 10, capacity = 10
 #+end_example
+
+* 参考资料
+- [[https://wiki.jikexueyuan.com/project/java-nio-zh/java-nio-buffer.html][04. Java NIO Buffer缓冲区]]
