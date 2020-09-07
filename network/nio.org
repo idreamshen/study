@@ -73,5 +73,80 @@ Read: 4. Position = 4, limit = 4, capacity = 10
 Buffer clear. Position = 0, limit = 10, capacity = 10
 #+end_example
 
+* FileChannel
+#+begin_src java :classname FileChannelDemo :cmdline "-cp ." :exports both :results output
+  import java.io.File;
+  import java.io.FileInputStream;
+  import java.io.FileOutputStream;
+  import java.io.RandomAccessFile;
+  import java.nio.Buffer;
+  import java.nio.ByteBuffer;
+  import java.nio.channels.FileChannel;
+
+  class FileChannelDemo {
+      public static void main(String[] args) throws Exception {
+
+          String fileName = "file-channel-demo";
+
+          // 创建一个临时文件
+          File file = createTempFile(fileName);
+
+          RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rws");
+          // 获取临时文件的 channel
+          FileChannel channel = randomAccessFile.getChannel();
+
+          ByteBuffer buf = ByteBuffer.allocate(16);
+
+          // 将 1 2 写入 buffer 中
+          buf.put((byte) 1);
+          buf.put((byte) 2);
+
+          // 翻转 buffer，因为现在 buffer 处于写模式
+          // 通过 flip 将 buffer 修改为读模式，供下方 channel 读取
+          buf.flip();
+
+          while(buf.hasRemaining()) {
+              channel.write(buf);
+          }
+
+          // 清空 buffer
+          buf.clear();
+
+          // 将 channel 位置归 0
+          // 因为接下来需要从 0 位置开始读取数据
+          channel.position(0);
+
+          // 将 channel 数据读入 buffer 中
+          channel.read(buf);
+
+          // 翻转 buffer，因为上一步其实是在往 buffer 中写数据，所以为写模式
+          // 现在通过 flip 将其修改为读模式
+          buf.flip();
+
+          // 打印 buffer 中的所有元素
+          while (buf.hasRemaining()) {
+              System.out.println(buf.get());
+          }
+
+      }
+
+      static File createTempFile(String fileName) throws Exception {
+          // 创建一个临时文件
+          File file = File.createTempFile(fileName, "");
+
+          // JVM退出前自动删除
+          file.deleteOnExit();
+
+          return file;
+      }
+
+  }
+#+end_src
+
+#+RESULTS:
+: 1
+: 2
+
 * 参考资料
 - [[https://wiki.jikexueyuan.com/project/java-nio-zh/java-nio-buffer.html][04. Java NIO Buffer缓冲区]]
+- [[https://stackoverflow.com/questions/19831893/not-able-to-read-file-using-java-nio-channels-filechannel][Not able to read file using java.nio.channels.FileChannel]]
