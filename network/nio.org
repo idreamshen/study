@@ -218,6 +218,7 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
     import java.net.InetSocketAddress;
     import java.util.Set;
     import java.util.Iterator;
+    import java.time.LocalDateTime;
 
     class ServerSocketChannelDemo {
         static int PORT = 8879;
@@ -225,9 +226,81 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
         public static void main(String[] args) throws Exception {
             Server server = new Server();
             server.start();
+            Thread.sleep(100);
 
-            Thread.sleep(20000);
+            Client client = new Client();
+            client.start();
+
+            Thread.sleep(200);
             server.stopServer();
+            client.stopClient();
+        }
+
+        static void log(String msg) {
+            System.out.println(LocalDateTime.now() + ": " + msg);
+        }
+
+        static class Client extends Thread {
+            SocketChannel socketChannel;
+            Selector selector;
+
+            public Client() throws Exception {
+                socketChannel = SocketChannel.open();
+                socketChannel.configureBlocking(false);
+                socketChannel.connect(new InetSocketAddress("127.0.0.1", PORT));
+
+                selector = Selector.open();
+
+                SelectionKey key = socketChannel.register(selector, SelectionKey.OP_CONNECT);
+            }
+
+            public void stopClient() throws Exception {
+                this.interrupt();
+                this.socketChannel.close();
+            }
+
+            public void run() {
+
+                while (!this.isInterrupted()) {
+                    try {
+                        int readyChannels = selector.select(10000);
+
+                        if (readyChannels == 0) continue;
+
+                        Set<SelectionKey> keys = selector.selectedKeys();
+                        Iterator<SelectionKey> iterator = keys.iterator();
+
+                        while (iterator.hasNext()) {
+                            SelectionKey key = iterator.next();
+
+                            if (key.isConnectable()) {
+                                log("{Client} client is connectable");
+                                if (socketChannel.finishConnect()) {
+                                    log("{Client} finish connect");
+                                    key.interestOps(SelectionKey.OP_WRITE);
+                                }
+                            } else if (key.isReadable()) {
+                                log("{Client} client is readable");
+                                ByteBuffer buffer = ByteBuffer.allocate(32);
+                                socketChannel.read(buffer);
+                                log("{Client} read data from server: " + new String(buffer.array()));
+                                // key.interestOps(SelectionKey.OP_WRITE);
+                            } else if (key.isWritable()) {
+                                log("{Client} client is writable");
+                                ByteBuffer buffer = ByteBuffer.wrap("I am client".getBytes());
+                                socketChannel.write(buffer);
+                                log("{Client} send data to server");
+                                key.interestOps(SelectionKey.OP_READ);
+                            }
+                        }
+                    }
+                    catch (Throwable e) {
+                        System.out.println("Error " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+
         }
 
         static class Server extends Thread {
@@ -274,25 +347,24 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
                                 SocketChannel socketChannel = serverSocketChannel.accept();
                                 socketChannel.configureBlocking(false);
                                 socketChannel.register(selector, SelectionKey.OP_READ);
-                                System.out.println("Accept a socket");
+                                log("{Server} Accept a socket");
                             } else if (key.isReadable()) {
                                 SocketChannel socketChannel = (SocketChannel) key.channel();
                                 ByteBuffer buffer = ByteBuffer.allocate(128);
                                 socketChannel.read(buffer);
                                 key.interestOps(SelectionKey.OP_WRITE);
-                                System.out.println("Read data from client");
+                                log("{Server} Read data from client");
                             } else if (key.isWritable()) {
                                 SocketChannel socketChannel = (SocketChannel) key.channel();
                                 ByteBuffer buffer = ByteBuffer.wrap("Hello from server".getBytes());
                                 socketChannel.write(buffer);
                                 key.interestOps(SelectionKey.OP_READ);
-                                System.out.println("Write data to client");
+                                log("{Server} Write data to client");
                             }
                         }
 
                     } catch (Exception e) {
-                        e.printStackTrace();
-                        break;
+                        throw new RuntimeException(e);
                     }
 
                 }
@@ -304,23 +376,15 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
   #+end_src
 
   #+RESULTS:
-  #+begin_example
-  Accept a socket
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  Read data from client
-  Write data to client
-  #+end_example
+  : 2020-09-08T12:11:35.826: {Client} client is connectable
+  : 2020-09-08T12:11:35.826: {Server} Accept a socket
+  : 2020-09-08T12:11:35.827: {Client} finish connect
+  : 2020-09-08T12:11:35.827: {Client} client is writable
+  : 2020-09-08T12:11:35.829: {Client} send data to server
+  : 2020-09-08T12:11:35.829: {Server} Read data from client
+  : 2020-09-08T12:11:35.829: {Server} Write data to client
+  : 2020-09-08T12:11:35.829: {Client} client is readable
+  : 2020-09-08T12:11:35.829: {Client} read data from server: Hello from server               
 
 
 * 参考资料
