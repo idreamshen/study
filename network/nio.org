@@ -390,3 +390,4 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
 * 参考资料
 - [[https://wiki.jikexueyuan.com/project/java-nio-zh/java-nio-buffer.html][04. Java NIO Buffer缓冲区]]
 - [[https://stackoverflow.com/questions/19831893/not-able-to-read-file-using-java-nio-channels-filechannel][Not able to read file using java.nio.channels.FileChannel]]
+- [[https://juejin.im/post/6844903737148833805][Java NIO之Selector]]
