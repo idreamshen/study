@@ -281,7 +281,7 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
                                 }
                             } else if (key.isReadable()) {
                                 log("{Client} client is readable");
-                                ByteBuffer buffer = ByteBuffer.allocate(32);
+                                ByteBuffer buffer = ByteBuffer.allocate(16);
                                 socketChannel.read(buffer);
                                 log("{Client} read data from server: " + new String(buffer.array()));
                                 // key.interestOps(SelectionKey.OP_WRITE);
@@ -376,15 +376,15 @@ Buffer clear. Position = 0, limit = 10, capacity = 10
   #+end_src
 
   #+RESULTS:
-  : 2020-09-08T12:11:35.826: {Client} client is connectable
-  : 2020-09-08T12:11:35.826: {Server} Accept a socket
-  : 2020-09-08T12:11:35.827: {Client} finish connect
-  : 2020-09-08T12:11:35.827: {Client} client is writable
-  : 2020-09-08T12:11:35.829: {Client} send data to server
-  : 2020-09-08T12:11:35.829: {Server} Read data from client
-  : 2020-09-08T12:11:35.829: {Server} Write data to client
-  : 2020-09-08T12:11:35.829: {Client} client is readable
-  : 2020-09-08T12:11:35.829: {Client} read data from server: Hello from server               
+  : 2020-09-08T12:30:01.214: {Client} client is connectable
+  : 2020-09-08T12:30:01.214: {Server} Accept a socket
+  : 2020-09-08T12:30:01.215: {Client} finish connect
+  : 2020-09-08T12:30:01.215: {Client} client is writable
+  : 2020-09-08T12:30:01.216: {Client} send data to server
+  : 2020-09-08T12:30:01.217: {Server} Read data from client
+  : 2020-09-08T12:30:01.217: {Server} Write data to client
+  : 2020-09-08T12:30:01.217: {Client} client is readable
+  : 2020-09-08T12:30:01.217: {Client} read data from server: Hello from serve
 
 
 * 参考资料
