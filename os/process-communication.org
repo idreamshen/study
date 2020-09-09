@@ -1,0 +1,18 @@
+#+TITLE: 进程通信
+
+- 管道
+- Socket
+- 共享内存
+- 消息队列
+- 信号量
+
+* 消息队列
+msgget 用于创建和访问一个消息队列
+=int msgget(key_t key, int msgflag)=
+
+msgsnd 用于将消息发送到消息队列中
+=int msgsend(int msgid, const void *msg_ptr, size_t msg_sz, int msgflag)=
+
+* 参考资料
+- [[https://juejin.im/post/6844903911556382728][进程间通信方式总结]]
+- [[https://blog.csdn.net/ljianhui/article/details/10287879][Linux进程间通信——使用消息队列]]

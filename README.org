@@ -2,7 +2,7 @@
 - 操作系统
   - 虚拟内存与物理内存转化
   - CPU 调度方式
-  - 进程的通信方式
+  - [[file:os/process-communication.org][进程通信]]
   - 进程栈大小
   - 进程与线程区别
   - [[file:os/process-state.org][进程状态]]
