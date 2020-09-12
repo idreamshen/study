@@ -153,8 +153,8 @@
   - [[file:other/oop.org][面向对象程序设计]]
   - [[file:other/java-oop-klass.org][Java 对象头]]
   - Java 反射及注解
-  - [[https://github.com/hollischuang/toBeTopJavaer][Java工程师成神之路]]
   - JAVA 深浅拷贝
+  - [[file:other/weakreference.org][WeakReference]]
 
 - 面试总结
   - [[https://www.cnblogs.com/look-look/p/11715439.html][2019 阿里java面试笔试总结]]
@@ -169,3 +169,7 @@
   - [[https://labuladong.gitbook.io/algo/][labuladong的算法小抄]]
   - [[https://www.geekxh.com][小浩算法]]
   - [[https://github.com/azl397985856/leetcode][力扣加加]]
+
+- 资源汇总
+  - [[https://github.com/hollischuang/toBeTopJavaer][Java工程师成神之路]]
+  - [[https://github.com/niudai/How-to-be-a-good-programmer][程序员修炼宝典]]

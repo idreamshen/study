@@ -1,0 +1,57 @@
+#+TITLE: Java WeakReference
+
+#+begin_src java :classname WeakReferenceDemo :cmdline "-XX:+PrintGC -cp ." :exports both :results output
+  import java.lang.ref.WeakReference;
+
+  class WeakReferenceDemo {
+
+      public static void main(String[] args) throws Exception {
+
+          Object obj = new Object();
+          WeakReference<Object> weakObj = new WeakReference<>(obj);
+
+          System.out.println("weakObj.get() = " + weakObj.get() + "\n");
+
+          System.out.println("obj 仍然保持引用，此时触发GC");
+
+          // gc
+          gc();
+
+          // 弱引用未被回收
+          System.out.println("weakObj.get() = " + weakObj.get() + "\n");
+
+
+          System.out.println("obj 断开引用，此时触发GC");
+
+          // 将 obj 变量指向 null
+          obj = null;
+
+          // gc
+          gc();
+
+          // 弱引用被回收
+          System.out.println("weakObj.get() = " + weakObj.get());
+      }
+
+      static void gc() throws Exception {
+          System.gc();
+          // 睡眠一会，确保 gc 完成
+          Thread.sleep(1000);
+      }
+  }
+#+end_src
+
+#+RESULTS:
+#+begin_example
+weakObj.get() = java.lang.Object@6d06d69c
+
+obj 仍然保持引用，此时触发GC
+[GC (System.gc())  1310K->440K(251392K), 0.0005907 secs]
+[Full GC (System.gc())  440K->273K(251392K), 0.0028937 secs]
+weakObj.get() = java.lang.Object@6d06d69c
+
+obj 断开引用，此时触发GC
+[GC (System.gc())  1584K->337K(251392K), 0.0009010 secs]
+[Full GC (System.gc())  337K->272K(251392K), 0.0044910 secs]
+weakObj.get() = null
+#+end_example
