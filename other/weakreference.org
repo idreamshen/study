@@ -55,3 +55,6 @@ obj 断开引用，此时触发GC
 [Full GC (System.gc())  337K->272K(251392K), 0.0044910 secs]
 weakObj.get() = null
 #+end_example
+
+* 参考资料
+- [[https://brightloong.github.io/2018/05/27/%E5%85%B3%E4%BA%8EJava%E4%B8%AD%E7%9A%84WeakReference/][关于Java中的WeakReference]]
