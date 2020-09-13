@@ -1,0 +1,70 @@
+#+TITLE: Java CyclicBarrier
+
+#+begin_src java :classname CyclicBarrierDemo :cmdline "-cp ." :exports both :results output
+  import java.util.concurrent.CyclicBarrier;
+  import java.util.concurrent.ExecutorService;
+  import java.util.concurrent.ThreadPoolExecutor;
+  import java.util.concurrent.TimeUnit;
+  import java.util.concurrent.LinkedBlockingQueue;
+  import java.lang.Runnable;
+
+  class CyclicBarrierDemo {
+
+      public static void main(String[] args) throws Exception {
+
+          CyclicBarrier barrier = new CyclicBarrier(6);
+
+          ExecutorService pool = new ThreadPoolExecutor(5, 5, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<>(10));
+
+          for (int i = 0; i < 5; i++) {
+              pool.execute(new Runnable() {
+                      @Override
+                      public void run() {
+                          try {
+                              System.out.println(Thread.currentThread().getName() + " start");
+                              Thread.sleep(1000);
+                              System.out.println(Thread.currentThread().getName() + " end, now await");
+                              barrier.await();
+                              System.out.println(Thread.currentThread().getName() + " await end");
+                          }
+                          catch (Throwable e) {
+                              System.out.println("Error " + e.getMessage());
+                              e.printStackTrace();
+                          }
+
+                      }
+                  });
+          }
+
+          System.out.println("Main thread await");
+          barrier.await();
+          System.out.println("Main thread await end");
+          pool.shutdown();
+      }
+  }
+
+#+end_src
+
+#+RESULTS:
+#+begin_example
+pool-1-thread-2 start
+pool-1-thread-5 start
+pool-1-thread-4 start
+Main thread await
+pool-1-thread-3 start
+pool-1-thread-1 start
+pool-1-thread-4 end, now await
+pool-1-thread-5 end, now await
+pool-1-thread-2 end, now await
+pool-1-thread-1 end, now await
+pool-1-thread-3 end, now await
+pool-1-thread-3 await end
+Main thread await end
+pool-1-thread-2 await end
+pool-1-thread-5 await end
+pool-1-thread-4 await end
+pool-1-thread-1 await end
+#+end_example
+
+* 参考资料
+- [[https://liuzhihang.com/2020/09/13/source-code-cyclicbarrier.html][【JDK源码笔记】- CyclicBarrier 不就是比 CountDownLatch 多了个回环么]]
