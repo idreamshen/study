@@ -74,6 +74,9 @@
 - JAVA IO
   - [[file:io/outputstream/outputstream.org][OutputStream]]
 
+- Go
+  - [[file:go/tour.org][Go Tour]]
+
 - Redis
   - [[file:redis/memory-policy.org][Redis 内存策略]]
   - Redis Cluster
