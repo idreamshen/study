@@ -1,9 +1,7 @@
 #+TITLE: A Tour of Go
 
-#+PROPERTY: header-args :exports both
-
 * Packages
-  #+begin_src go
+  #+begin_src go :exports both
     package main
 
     import (
@@ -20,7 +18,7 @@
 : My favorite number is 1
 
 * Imports
-  #+begin_src go
+  #+begin_src go :exports both
     package main
 
     import (
@@ -37,7 +35,7 @@
   : Now you have 2.6457513110645907 problems.
 
 * Exported names
-  #+begin_src go
+  #+begin_src go :exports both
     package main
 
     import (
