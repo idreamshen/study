@@ -18,6 +18,7 @@
 
 #+RESULTS:
 : My favorite number is 1
+
 * Imports
   #+begin_src go
     package main
@@ -34,6 +35,7 @@
 
   #+RESULTS:
   : Now you have 2.6457513110645907 problems.
+
 * Exported names
   #+begin_src go
     package main
