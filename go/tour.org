@@ -502,5 +502,109 @@
   #+RESULTS:
   : Go runs on OS X.
 
+* Switch evaluation order
+  #+begin_src go :exports both
+    package main
+
+    import (
+        "fmt"
+        "time"
+    )
+
+    func main() {
+        fmt.Println("When's Saturday?")
+        today := time.Now().Weekday()
+        switch time.Saturday {
+        case today + 0:
+            fmt.Println("Today.")
+        case today + 1:
+            fmt.Println("Tomorrow.")
+        case today + 2:
+            fmt.Println("In two days.")
+        default:
+            fmt.Println("Too far away.")
+        }
+    }
+  #+end_src
+
+  #+RESULTS:
+  : When's Saturday?
+  : Too far away.
+
+* Switch with no condition
+  #+begin_src go :exports both
+    package main
+
+    import (
+        "fmt"
+        "time"
+    )
+
+    func main() {
+        t := time.Now()
+        switch {
+        case t.Hour() < 12:
+            fmt.Println("Good morning!")
+        case t.Hour() < 17:
+            fmt.Println("Good afternoon.")
+        default:
+            fmt.Println("Good evening.")
+        }
+    }
+  #+end_src
+
+  #+RESULTS:
+  : Good evening.
+
+* Defer
+  #+begin_src go :exports both
+    package main
+
+    import "fmt"
+
+    func main() {
+        defer fmt.Println("world")
+
+        fmt.Println("hello")
+    }
+  #+end_src
+
+  #+RESULTS:
+  : hello
+  : world
+
+* Stacking defers
+  #+begin_src go :exports both
+    package main
+
+    import "fmt"
+
+    func main() {
+        fmt.Println("counting")
+
+        for i := 0; i < 10; i++ {
+            defer fmt.Println(i)
+        }
+
+        fmt.Println("done")
+    }
+  #+end_src
+
+  #+RESULTS:
+  #+begin_example
+  counting
+  done
+  9
+  8
+  7
+  6
+  5
+  4
+  3
+  2
+  1
+  0
+  #+end_example
+
 * 参考资料
 [[https://tour.golang.org/][A Tour of Go]]
