@@ -1,0 +1,16 @@
+#+begin_src python :results output
+def bubble_sort(inputs):
+    n = len(inputs)
+    for i in range(n):
+        for j in range(n - 1 - i):
+            if inputs[j] > inputs[j+1]:
+                tmp = inputs[j]
+                inputs[j] = inputs[j+1]
+                inputs[j+1] = tmp
+    return inputs
+
+print(bubble_sort([64, 34, 25, 12, 22, 11, 90]))
+#+end_src
+
+#+RESULTS:
+: [11, 12, 22, 25, 34, 64, 90]
